@@ -1,0 +1,29 @@
+"""Josep's Module """
+import os.path
+from collections import defaultdict
+#import projectors
+#import filters
+#import clustering
+#import tempfile
+#import subprocess
+#import pm.ts
+
+#__all__=['reencoders','projectors','filters','clustering']
+
+
+def parallel_cnet_discovery(view,log):
+	cases = map(lambda t: list(t),log.get_uniq_cases())
+	scat_cases = []
+	for l in cases:
+		s = reduce(lambda x,y: x+' '+y,l)
+		scat_cases.append(s)
+	view.scatter('sublog',scat_cases)
+	view.execute('l = pm.log.log_from_iterable(sublog)')
+	view.execute('cl = pm.cnet.condition_log_for_cnet(l)')
+	view.execute('sk = pm.cnet.flexible_heuristic_miner(cl)')
+	view.execute('c = pm.cnet.cnet_from_log(cl, skeleton=sk)')
+	cn = reduce(lambda x,y: x+y, view.gather('c'))
+	return cn
+	
+	
+	
