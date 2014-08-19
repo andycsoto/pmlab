@@ -1,6 +1,6 @@
 import copy
+import log
 from collections import defaultdict
-from .. log import Log
 
 class RemoveImmediateRepetitionsFilter:
     """Removes immediate repetitions of activities (only one activity per

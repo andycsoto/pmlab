@@ -1,7 +1,8 @@
+"""This neither..."""
 #from operator import itemgetter
 #import pickle
 import copy
-from .. log import Log
+import log
 
 def most_frequent(act_dict, n, extend_same_freq=False):
     """Returns the [n] most frequent activities in the given activity dictionary

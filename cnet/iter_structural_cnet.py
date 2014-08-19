@@ -12,7 +12,7 @@ import random
 import cn_stp
 #import cnet
 import stp_to_cnet
-from .. cnet import immediately_follows_cnet_from_log, stp_solver
+from pmlab.cnet import immediately_follows_cnet_from_log, stp_solver
 
 #stp_solver = '../stp/bin/stp'
 

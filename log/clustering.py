@@ -1,6 +1,7 @@
 import copy
+import log
 from collections import defaultdict, namedtuple, deque
-from .. log import Log, EnhancedLog
+
 
 def random_balanced_clusters(log, clusters=2):
     """Returns a list of logs obtained from [log] by random

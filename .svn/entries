@@ -1,83 +1,0 @@
-10
-
-dir
-1222
-svn://svn.lsi.upc.edu/jcarmona/IncrementalMining/pm
-svn://svn.lsi.upc.edu/jcarmona
-
-
-
-2013-01-30T00:16:15.276991Z
-1209
-msole
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-3af31437-1dbb-e08b-97d0-f64b0834b5ac
-
-bpmn
-dir
-
-pn
-dir
-
-log
-dir
-
-doc
-dir
-
-ts
-dir
-
-__init__.py
-file
-
-
-
-
-2012-09-11T14:47:41.000000Z
-be9bff1bde38ed6bd5adb4c63502c620
-2012-09-06T20:51:48.949364Z
-1165
-msole
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-22
-
-log_ts
-dir
-
-cnet
-dir
-
