@@ -1,4 +1,3 @@
-"""This neither..."""
 #from operator import itemgetter
 #import pickle
 import copy
