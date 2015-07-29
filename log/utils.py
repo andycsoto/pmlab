@@ -2,9 +2,15 @@ import os.path
 import reencoders
 import csv
 import re
+import sys
 import xml.etree.ElementTree as xmltree
+import networkx as nx
 from collections import defaultdict
+from collections import OrderedDict
 from copy import deepcopy
+
+def create_logInfo(log):
+    return LogInfo(log)
 
 def log_from_file(filename, format=None, universal_newline=False,
                     uniq_cases=False, reencoder=None, comment_marks=None):
@@ -15,7 +21,7 @@ def log_from_file(filename, format=None, universal_newline=False,
         filename extension is used to try to infer the format.
         'raw': The file is in 'raw' format. i.e. each line contains a case, and
             each activity is separated by means of a space from the next.
-        'xes': XML standard format. In this case the rest of the parameters is
+        'xes': XML standard form2at. In this case the rest of the parameters is
             ignored (no reencodings, comments, etc.). Extracts only activity
             names.
         'xes_all': XML standard format. In this case the rest of the parameters
@@ -220,6 +226,163 @@ def activity_positions(log):
         activity_positions.append( position_dictionary )
     return activity_positions
 
+"""ANDRES: Represents information extracted from the Log, refering to
+    the Log graph
+    IMLogInfoG.java
+    """
+
+
+class LogInfo:
+    directly_follows_graph = None
+    eventually_follows_graph = None
+    activities = None
+    start_activities = None
+    end_activities = None
+    minimum_self_distances_between = None
+    minimum_self_distances = None
+    number_of_events = None
+    number_of_epsilon_traces = None
+    highest_trace_cardinality = None
+    occurrences_of_most_occurring_direct_edge = None
+    most_occurring_start_activity = None
+    most_occurring_end_activity = None
+
+    def __init__(self, log):
+        print "Creating LogInfo"
+        self.directly_follows_graph = nx.DiGraph()
+        self.eventually_follows_graph = nx.DiGraph()
+        self.activities = {}
+        self.start_activities = {}
+        self.end_activities = {}
+        self.minimum_self_distances = {}
+        self.minimum_self_distances_between = {}
+        self.number_of_events = 0
+        self.number_of_epsilon_traces = 0
+        longest_trace = 0
+        self.highest_trace_cardinality = 0
+        added_edge = False
+        #X from_event_class;
+        #X to_event_class;
+        #Walk through the log
+        #HashMap<X, Integer> event_seen_at;
+        #List<X> read_trace;
+        log_uniq_cases = log.get_uniq_cases()
+        for trace in log_uniq_cases:
+            cardinality = log_uniq_cases[trace]
+            from_event_class = None
+            to_event_class = None
+            trace_size = 0
+            event_seen_at = {}
+            read_trace = []
+            for ec in trace:
+                if ec not in self.activities:
+                    self.activities[ec]=cardinality
+                else:
+                    self.activities[ec] += cardinality
+                if ec not in self.directly_follows_graph:
+                    self.directly_follows_graph.add_node(ec,weight=1)
+                    self.eventually_follows_graph.add_node(ec,weight=1)
+                from_event_class = to_event_class
+                to_event_class = ec
+                #add connections to the eventually-follows graph
+                edge = None
+                new_eventually_cardinality = 0
+                if len(read_trace) is not 0:
+                    for eventuallySeen in read_trace:
+                        #en java, si el edge existe, add_edge retorna null
+                        #por lo que intento encontrar el edge
+                        if (eventuallySeen, to_event_class) not in self.eventually_follows_graph.edges():
+                            self.eventually_follows_graph.add_edge(eventuallySeen, to_event_class, weight=1)
+                            edge = self.eventually_follows_graph.edge[eventuallySeen][to_event_class]
+                            added_edge = True
+                        else:
+                            added_edge = False
+                        new_eventually_cardinality = cardinality
+                        if not added_edge:
+                            edge = self.eventually_follows_graph.edge[eventuallySeen][to_event_class]
+                            new_eventually_cardinality += edge["weight"]
+                        edge["weight"] = new_eventually_cardinality
+                read_trace.append(to_event_class)
+                if event_seen_at.has_key(to_event_class):
+                    #we have detected an activity for the second time
+                    #check wether this is shorter than what we had already seen
+                    old_distance = sys.maxint
+                    if self.minimum_self_distances.has_key(to_event_class):
+                        old_distance = self.minimum_self_distances[to_event_class]
+                    if not self.minimum_self_distances.has_key(to_event_class) or \
+                    (trace_size - event_seen_at[to_event_class] <= old_distance): #DUDA
+                        #keep the new minimum self distance
+                        new_distance = trace_size - event_seen_at[to_event_class]
+                        if old_distance > new_distance:
+                            #we found a shorter minimum self distance, record and restart with a new multiset (dict)
+                            self.minimum_self_distances[to_event_class] = new_distance
+                            self.minimum_self_distances_between[to_event_class] = {}
+                        #store the minimum self-distance activities
+                        mb = self.minimum_self_distances_between[to_event_class]
+                        #mb.addAll(read_trace.subList(event_seen_at.get(to_event_class) + 1, trace_size), cardinality);
+                        for mbe in read_trace[event_seen_at[to_event_class]+1:trace_size]:
+                            if mbe not in mb:
+                                mb[mbe] = cardinality
+                            else:
+                                mb[mbe] += cardinality
+                event_seen_at[to_event_class] = trace_size
+                if from_event_class is not None:
+                    #add edge to directly-follows graph (ln 118)
+                    if (from_event_class, to_event_class) not in self.directly_follows_graph.edges():
+                        self.directly_follows_graph.add_edge(from_event_class, to_event_class, weight=1)
+                        edge = self.directly_follows_graph.edge[from_event_class][to_event_class]
+                        added_edge = True
+                    else:
+                        added_edge = False
+                    new_cardinality = cardinality
+                    if not added_edge:
+                        edge = self.directly_follows_graph.edge[from_event_class][to_event_class]
+                        new_cardinality = new_cardinality + edge["weight"]
+                    edge["weight"] = new_cardinality
+                else:
+                    if to_event_class not in self.start_activities:
+                        self.start_activities[to_event_class] = cardinality
+                    else:
+                        self.start_activities[to_event_class] += cardinality
+                trace_size += 1
+            #update the longest-trace-counter
+            if trace_size > longest_trace:
+                longest_trace = trace_size
+            self.number_of_events += trace_size * cardinality
+            self.highest_trace_cardinality = max(self.highest_trace_cardinality, cardinality)
+            if to_event_class is not None:
+                if to_event_class not in self.end_activities:
+                    self.end_activities[to_event_class] = cardinality
+                else:
+                    self.end_activities[to_event_class] += cardinality
+            if trace_size == 0:
+                self.number_of_epsilon_traces = self.number_of_epsilon_traces + cardinality
+        #debug(minimum_self_distances_between.toString());
+        #copy local fields to class fields
+        #(...)
+        #find the edge with the greatest weight
+        self.occurrences_of_most_occurring_direct_edge = 0
+        for edge in self.directly_follows_graph.edges_iter(data=True):
+            self.occurrences_of_most_occurring_direct_edge = max(self.occurrences_of_most_occurring_direct_edge, edge[2]['weight']) #edge[2] es el weight
+        #find the strongest start and end activities
+        occurrences_of_most_occurring_start_activity = 0
+        occurrences_of_most_occurring_end_activity = 0
+        for activity in self.start_activities:
+            try:
+                if self.start_activities[activity] > occurrences_of_most_occurring_start_activity:
+                    occurrences_of_most_occurring_start_activity=self.start_activities[activity]
+                    self.most_occurring_start_activity = activity
+            except:
+                pass
+            try:
+                if self.end_activities[activity] > occurrences_of_most_occurring_end_activity:
+                    occurrences_of_most_occurring_end_activity = self.end_activities[activity]
+                    self.most_occurring_end_activity = activity
+            except:
+                pass
+        #compute the transitive closure of the directly-follows graph
+        #directlyFollowsTransitiveClosureGraph = TransitiveClosure.transitiveClosure(directly_follows_graph);
+
 """asdasd"""
 class Log:
     """Class representing a basic log"""
@@ -257,6 +420,16 @@ class Log:
                 self.cases += [ucase]*occ
         return self.cases
 
+    """ANDRES: Returns the frequency of a case"""
+    def get_case_freq(self, case_to_count):
+        count = 0
+        for case in self.get_cases():
+            if case == case_to_count:
+                count+=1
+        return count
+        #counter = Counter(self.get_cases())
+        #return counter[case];
+
     def get_uniq_cases(self):
         """Returns the list of unique cases of the log. If the log was
         stored as a list of cases, then the log is 'compressed' and unique cases
@@ -264,6 +437,10 @@ class Log:
         if self.cases and not self.uniq_cases:
             for case in self.cases:
                 self.uniq_cases[tuple(case)] += 1
+            aux = sorted(self.uniq_cases.iteritems(), key=lambda (k,v): (v,k),reverse=True)
+            self.uniq_cases = OrderedDict()
+            for t in aux:
+                self.uniq_cases[t[0]]=t[1]
         return self.uniq_cases
 
     def get_alphabet(self):
