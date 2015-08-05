@@ -383,6 +383,12 @@ class LogInfo:
         #compute the transitive closure of the directly-follows graph
         #directlyFollowsTransitiveClosureGraph = TransitiveClosure.transitiveClosure(directly_follows_graph);
 
+    def get_min_self_distances_between_act(self, activity):
+        if activity not in self.minimum_self_distances_between.keys:
+            return {}
+        else:
+            return self.minimum_self_distances_between[activity]
+
 """asdasd"""
 class Log:
     """Class representing a basic log"""

@@ -1,21 +1,23 @@
 import log
 import process_tree
+import mining_parameters as mp
+import mining
 
 
-def process_tree_from_file(input_file):
+def process_tree_from_file(input_file, mining_parameters):
     #log = pmlab.log.log_from_file('/Users/alcifuen/Dropbox/TESIS/Logs_Mauro/Lfull.xes')
     input_log = log.log_from_file(input_file)
-    process_tree_from_log(input_log)
+    process_tree_from_log(input_log, mining_parameters)
 
 
-def process_tree_from_log(input_log, method='inductive_miner'):
+def process_tree_from_log(input_log, mining_parameters, method='inductive_miner'):
     if method is 'inductive_miner':
-        inductive_mine_process_tree(input_log)
+        inductive_mine_process_tree(input_log, mining_parameters)
 
 
-def inductive_mine_process_tree(input_log):
+def inductive_mine_process_tree(input_log, mining_parameters):
     tree = process_tree.ProcessTree.process_tree_no_params()
-    miner_state = MinerState()
+    miner_state = mp.MinerState(mining_parameters)
     root = inductive_mine_node(input_log, tree, miner_state)
     #root.setProcessTree(tree);
 	#tree.setRoot(root);
@@ -24,7 +26,8 @@ def inductive_mine_process_tree(input_log):
 	#		ReduceTree.reduceTree(tree);
 	#		debug("after reduction " + tree.getRoot(), minerState);
 	#	}
-	return tree
+	#return tree
+    pass
 
 
 def inductive_mine_node(input_log, tree, miner_state):
@@ -34,7 +37,7 @@ def inductive_mine_node(input_log, tree, miner_state):
         return base_case
     cut = find_cut(input_log, log_info, miner_state)
     if cut is not None and cut.is_valid():
-        split_result = split_log(input_log, log_info, cut)
+        split_result = mining.split_log(input_log, log_info, cut)
         new_node = new_node(cut.get_operator())
         add_node(tree, new_node)
         #recurse
@@ -73,7 +76,7 @@ def find_base_cases(input_log, log_info, tree, miner_state):
     while True:
         next_bcf = next(it, None)
         if next_bcf is not None:
-            n = next_bcf.find_base_cases(input_log, log_info, tree, miner_state)
+            n = next_bcf.find_base_cases(input_log, log_info, tree)
         else:
             break
     return n
@@ -89,3 +92,7 @@ def find_cut(input_log, log_info, miner_state):
         else:
             break
     return c
+
+
+def find_fall_through(input_log, log_info, tree):
+    pass
