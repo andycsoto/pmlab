@@ -1,6 +1,7 @@
 import log
 import process_tree
 import mining_parameters as mp
+import log_splitter as ls
 import mining
 
 
@@ -37,7 +38,7 @@ def inductive_mine_node(input_log, tree, miner_state):
         return base_case
     cut = find_cut(input_log, log_info, miner_state)
     if cut is not None and cut.is_valid():
-        split_result = mining.split_log(input_log, log_info, cut)
+        split_result = split_log(input_log, log_info, cut)
         new_node = new_node(cut.get_operator())
         add_node(tree, new_node)
         #recurse
@@ -94,5 +95,19 @@ def find_cut(input_log, log_info, miner_state):
     return c
 
 
-def find_fall_through(input_log, log_info, tree):
-    pass
+def split_log(input_log, log_info, cut, miner_state):
+    result = miner_state.parameters.log_splitter.split(input_log, log_info, cut, miner_state)
+    miner_state.discarded_events.update(result.discarded_events)
+    return result
+
+
+def find_fall_through(input_log, log_info, tree, miner_state):
+    n = None
+    it = iter(miner_state.parameters.fall_throughs)
+    while True:
+        next_ft = next(it, None)
+        if next_ft is not None and n is None:
+            n = next_ft.fall_through(input_log, log_info, tree, miner_state)
+        else:
+            break
+    return n

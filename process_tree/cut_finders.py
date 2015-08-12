@@ -3,6 +3,7 @@ __author__ = 'alcifuen'
 import networkx as nx
 import mining
 
+
 class CutFinder:
 
     def __init__(self):
@@ -269,8 +270,62 @@ class CutFinderIMLoop(CutFinder):
             if end_activity not in start_activities:
                 for edge in graph.in_edges(end_activity):
                     candidates[connected_components[edge[0]]] = False
-        #exclude all candidates that have no connection from all end activities
+        #exclude all candidates that have no connection from all start activities
+        cc = 0
+        while cc < ccs:
+            end = sub_end_activities[cc]
+            for node1 in end:
+                for node2 in set(start_activities):
+                    found_edge = graph.get_edge_data(node1, node2, default=False)
+                    if not found_edge:
+                        candidates[cc] = False
+        #exclude all candidates that have no connection from all end activites
+        cc = 0
+        while cc < ccs:
+            start = sub_start_activities[cc]
+            for node1 in start:
+                for node2 in set(end_activities):
+                    found_edge = graph.get_edge_data(node2, node1, default=False)
+                    if not found_edge:
+                        candidates[cc] = False
+        #make the lists of sets of nodes
+        result = []
+        for i in range(0, ccs):
+            result.append(set())
+        #divide the activities
+        for node in graph.nodes:
+            if candidates[connected_components[node]]:
+                index = connected_components[node]
+            else:
+                index = 0
+            s = result[index]
+            s.add(node)
+            result[index] = s
+        #filter the empty sets
+        result2 = []
+        for s in result:
+            if len(s) > 0:
+                result2.add(s)
+        return mining.Cut(Operator.loop, result2)
 
 
+class CutFinderIMSequenceReachability:
 
+    def __init__(self, graph):
+        self.reachable_to = {}
+        self.reachable_from = {}
+        self.condensed_graph = graph
+
+    def get_reachable_from_to(self, node):
+        pass
+
+
+    def get_reachable_from(self, node):
+        return self.find_reachable_from(node)
+
+    def find_reachable_to(self, from_node):
+        pass
+
+    def find_reachable_from(self, to_node):
+        pass
 
