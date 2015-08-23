@@ -1,11 +1,31 @@
 __author__ = 'alcifuen'
-
 import networkx as nx
-import mining
+import enum
+
+Operator = enum.Enum('operator', 'xor sequence parallel loop')
+
+
+class Cut:
+
+    partition = None
+
+    def __init__(self, operator, partition):
+        self.operator = operator
+        self.partition = partition
+
+    def is_valid(self):
+        if self.operator is None and self.partition.size() <= 1:
+            return False
+        for part in self.partition:
+            if part.size() == 0:
+                return False
+        return True
+
+    def __str__(self):
+        return str(self.operator) + + str(self.partition)
 
 
 class CutFinder:
-
     def __init__(self):
         pass
 
@@ -45,7 +65,7 @@ class CutFinderIMExclusiveChoice(CutFinder):
 
     def find_cut_dfg(self, dfg):
         connected_components = nx.strongly_connected_components(dfg) #BUG de sander?
-        return mining.Cut(Operator.xor, connected_components)
+        return Cut(Cut.operator.xor, connected_components)
 
 
 class CutFinderIMSequence(CutFinder):
@@ -98,7 +118,7 @@ class CutFinderIMSequence(CutFinder):
         result = []
         result.addAll(condensed_graph_2.nodes) #implementar addAll
         sort(result, Comparator) #implementar comparador
-        return mining.Cut(Operator.sequence, result)
+        return Cut(Cut.operator.sequence, result)
 
 
 class CutFinderIMParallel(CutFinder):
@@ -200,7 +220,7 @@ class CutFinderIMParallel(CutFinder):
             for cc in ccs:
                 set4.add(cc)
             connected_components2[0] = set4
-        return mining.Cut(Operator.parallel, connected_components2)
+        return Cut(Cut.operator.parallel, connected_components2)
 
 
 class CutFinderIMParallelWithMinimumSelfDistance(CutFinder):
@@ -223,9 +243,9 @@ class CutFinderIMLoop(CutFinder):
             connected_components[end_activity] = 0
         #find the other connected components
         ccs = 1
-        for node in dfg.nodes:
+        for node in graph.nodes:
             if node not in connected_components.keys():
-                label_connected_components(graph, node, connected_components, ccs)
+                self.label_connected_components(graph, node, connected_components, ccs)
                 ccs += 1
         #find the start activities of each component
         sub_start_activities = {}
@@ -306,7 +326,14 @@ class CutFinderIMLoop(CutFinder):
         for s in result:
             if len(s) > 0:
                 result2.add(s)
-        return mining.Cut(Operator.loop, result2)
+        return Cut(Cut.operator.loop, result2)
+
+    def label_connected_components(self, graph, node, connected_components, connected_component):
+        if node not in connected_components.keys:
+            connected_components[node] = connected_component
+            for edge in graph.edges:
+                self.label_connected_components(graph, edge[0], connected_components, connected_component)
+                self.label_connected_components(graph, edge[1], connected_components, connected_component)
 
 
 class CutFinderIMSequenceReachability:
@@ -318,7 +345,6 @@ class CutFinderIMSequenceReachability:
 
     def get_reachable_from_to(self, node):
         pass
-
 
     def get_reachable_from(self, node):
         return self.find_reachable_from(node)

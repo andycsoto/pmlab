@@ -2,23 +2,33 @@ __author__ = 'alcifuen'
 
 from general import ProcessTreeElement
 from general import ProcessTree
+import uuid
 
 
 class Originator(ProcessTreeElement):
-    @classmethod
-    def variable_from_name(cls, name):
-        super(Variable, cls.process_tree_element_from_name(name))
 
-    @classmethod
-    def variable_from_var(cls, var):
-        super(Variable, cls.process_tree_element_from_pte(var))
+    def __init__(self, uid=uuid.uuid4(), name=None):
+        if name is None:
+            name=str(uid)
+        super(Originator).__init__(uid, name)
 
 
 class Resource(Originator):
-    pass
+    def __init__(self, uid=uuid.uuid4(), name=None):
+        if name is None:
+            name=str(uid)
+        super(Resource).__init__(uid, name)
+
 
 class Group(Originator):
-    pass
+    def __init__(self, uid=uuid.uuid4(), name=None):
+        if name is None:
+            name=str(uid)
+        super(Group).__init__(uid, name)
+
 
 class Role(Originator):
-    pass
+    def __init__(self, uid=uuid.uuid4(), name=None):
+        if name is None:
+            name=str(uid)
+        super(Role).__init__(uid, name)

@@ -1,8 +1,9 @@
 import log
 import process_tree
 import mining_parameters as mp
+import cut
+import control_flow as cf
 import log_splitter as ls
-import mining
 
 
 def process_tree_from_file(input_file, mining_parameters):
@@ -69,6 +70,11 @@ def inductive_mine_node(input_log, tree, miner_state):
         return new_node
     else:
         return find_fall_through(input_log, log_info, tree)
+
+
+def new_node(operator):
+    if operator == cut.Operator.xor:
+        return cf.Block()
 
 
 def find_base_cases(input_log, log_info, tree, miner_state):

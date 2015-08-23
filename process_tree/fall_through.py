@@ -20,19 +20,18 @@ class FallThroughTauLoop(FallThrough):
                 number_of_times_tau_taken += self.filter_trace(sublog, trace, log.get_case_freq(trace), log_info.start_activities)
             if sublog.size() > log.size():
                 loop = ""
-                loop.setProcessTree(process_tree)
+                loop.set_process_tree(process_tree)
                 process_tree.addNode(loop)
                 body = utils.inductive_mine_node(sublog, process_tree, miner_state)
-                loop.addChild(body)
+                loop.add_child(body)
                 redo = "tau"
-                redo.setProcessTree(process_tree)
+                redo.set_process_tree(process_tree)
                 process_tree.addNode(redo)
-                loop.addChild(redo)
-                exitNode = "tau"
-                exitNode.setProcessTree(process_tree)
-                process_tree.addNode(exitNode)
-                loop.addChild(exitNode)
-
+                loop.add_child(redo)
+                exit_node = "tau"
+                exit_node.set_process_tree(process_tree)
+                process_tree.addNode(exit_node)
+                loop.add_child(exit_node)
                 return loop
         return None
 
@@ -55,28 +54,28 @@ class FallThroughTauLoop(FallThrough):
 class FallThroughFlower(FallThrough):
     def fall_through(self, log, log_info, process_tree, miner_state):
         loop_node = ""
-        loop_node.setProcessTree(process_tree)
+        loop_node.set_process_tree(process_tree)
         process_tree.addNode(loop_node)
         #body: tau
         body = "tau"
-        body.setProcessTree(process_tree)
-        process_tree.addNode(body)
-        loop_node.addChild(body)
+        body.set_process_tree(process_tree)
+        process_tree.add_node(body)
+        loop_node.add_child(body)
         #redo xor/activity
         if log_info.activities.size() == 1:
-            xorNode = loop_node
+            xor_node = loop_node
         else:
-            xorNode = ""
-            xorNode.setProcessTree(process_tree)
-            process_tree.addNode(xorNode)
-            loop_node.addChild(xorNode)
+            xor_node = ""
+            xor_node.set_process_tree(process_tree)
+            process_tree.add_node(xor_node)
+            loop_node.add_child(xor_node)
         for activity in log_info.activities:
             child = activity.id
-            child.setProcessTree(process_tree)
-            process_tree.addNode(child)
-            xorNode.addChild(child)
+            child.set_process_tree(process_tree)
+            process_tree.add_node(child)
+            xor_node.add_child(child)
         tau2 = "tau"
-        tau2.setProcessTree(process_tree)
-        process_tree.addNode(tau2)
-        loop_node.addChild(tau2)
+        tau2.set_process_tree(process_tree)
+        process_tree.add_node(tau2)
+        loop_node.add_child(tau2)
         return loop_node

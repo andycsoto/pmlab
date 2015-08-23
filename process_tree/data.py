@@ -2,49 +2,23 @@ __author__ = 'alcifuen'
 
 import uuid
 from general import ProcessTreeElement
-from controlFlow import Edge
+from control_flow import Edge
 
 
 class Variable(ProcessTreeElement):
-    def __init__(self, id, name):
+    def __init__(self, id=uuid.uuid4(), name=str(id)):
         self.id = id
         self.name = name
 
-    @classmethod
-    def variable_from_name(cls, name):
-        super(Variable, cls.process_tree_element_from_name(name))
-
-    @classmethod
-    def variable_from_var(cls, var):
-        super(Variable, cls.process_tree_element_from_pte(var))
-
 
 class Expression(ProcessTreeElement):
-    expression = ''
-    variables = set()
 
-    def __init__(self, e):
-        super(Expression, self.process_tree_element_from_pte(e))
-        self.expression = e.getExpression()
-        self.variables = set()
-
-    @classmethod
-    def expression_from_parameters(cls, id, name, expression, variables):
-        super(Expression, cls(id, name))
-        cls.expression = expression
-        cls.variables = set(variables)
-
-    @classmethod
-    def expression_from_id_expression_variables(cls, id, expression, variables):
-        return cls.expression_from_parameters(id, str(id), expression, variables)
-
-    @classmethod
-    def expression_from_name_expression_variables(cls, name, expression, variables):
-        return cls.expression_from_parameters(uuid.uuid4(), name, expression, variables)
-
-    @classmethod
-    def expression_from_expression_variables(cls, expression, variables):
-        return cls.expression_from_id_expression_variables(uuid.uuid4(), expression, variables)
+    def __init__(self, uid=uuid.uuid4(), name=None, expression='', variables=set()):
+        if name is None:
+            name = str(uid)
+        super(Expression, self.__init__(self, uid, name))
+        self.expression = expression
+        self.variables = variables
 
     def equals(self, o):
         if super(Expression, self.equals(o)):
@@ -67,3 +41,25 @@ class Expression(ProcessTreeElement):
 
     def __str__(self):
         return '['+self.expression+']'
+
+
+class NOEXPRESSION(Expression):
+
+    def __init__(self):
+        super(NOEXPRESSION, self.__init__())
+        self.uid = None
+        self.name = ""
+        self.variables = set()
+        self.expression = ""
+
+    def __str__(self):
+        return ""
+
+    def equals(self, o):
+        return isinstance(o, Expression) and o.uid is None
+
+    def add_variable(self, var):
+        return False
+
+    def remove_variable(self, var):
+        return False

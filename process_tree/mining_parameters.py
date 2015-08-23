@@ -7,8 +7,9 @@ Created on Wed Jan 07 12:27:30 2015
 import utils
 import networkx as nx
 import base_case_finders as bcf
-import cut_finders as cf
+import cut as cf
 import resources
+
 
 class MiningParameters:
     base_case_finders = None

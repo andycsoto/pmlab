@@ -1,6 +1,6 @@
 __author__ = 'alcifuen'
 
-import mining
+from cut import Cut
 
 
 class LogSplitter():
@@ -31,17 +31,17 @@ class LogSplitterIMi(LogSplitter):
             for activity in sigma:
                 map_activity_2_sigma[activity] = sigma
         for trace in log:
-            if cut.operator() == mining.Cut.Operator.xor:
+            if cut.operator() == Cut.Operator.xor:
                 self.splitXor(result, trace, cut.partition(), log.get_case_freq(trace), map_sigma_2_sublog, map_activity_2_sigma, noise)
-            elif cut.operator() == mining.Cut.Operator.sequence:
+            elif cut.operator() == Cut.Operator.sequence:
                 self.splitSequence(result, trace, cut.partition(), log.get_case_freq(trace), map_sigma_2_sublog, map_activity_2_sigma, noise)
-            elif cut.operator() == mining.Cut.Operator.parallel:
+            elif cut.operator() == Cut.Operator.parallel:
                 self.splitParallel(result, trace, cut.partition(), log.get_case_freq(trace), map_sigma_2_sublog, map_activity_2_sigma, noise)
-            elif cut.operator() == mining.Cut.Operator.loop:
+            elif cut.operator() == Cut.Operator.loop:
                 self.splitLoop(result, trace, cut.partition(), log.get_case_freq(trace), map_sigma_2_sublog, map_activity_2_sigma, noise)
         return LogSplitter.LogSplitResult(result, noise)
 
-    def split_Xor(self, result, trace, partition, cardinality, map_sigma_2_sublog, map_activity_2_sigma, noise):
+    def split_xor(self, result, trace, partition, cardinality, map_sigma_2_sublog, map_activity_2_sigma, noise):
         if trace.size() == 0:
             for sublog in result:
                 sublog.add(trace, cardinality)
