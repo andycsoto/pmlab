@@ -17,7 +17,7 @@ class Cut:
         if self.operator is None and self.partition.size() <= 1:
             return False
         for part in self.partition:
-            if part.size() == 0:
+            if len(part) == 0:
                 return False
         return True
 
@@ -25,25 +25,9 @@ class Cut:
         return str(self.operator) + + str(self.partition)
 
 
-class CutFinder:
+class CutFinder(object):
     def __init__(self):
         pass
-
-
-class CutFinderIM(CutFinder):
-
-    cutFinders = [CutFinderIMExclusiveChoice(), CutFinderIMSequence(), CutFinderIMParallelWithMinimumSelfDistance(), CutFinderIMLoop(), CutFinderIMParallel()]
-
-    def find_cut(self, input_log, log_info, miner_state):
-        c = None
-        it = iter(miner_state.parameters.cut_finders)
-        while True:
-            next_cf = next(it, None)
-            if next_cf is not None and (c is None or not c.is_valid()):
-                c = next_cf.find_cut(input_log, log_info, miner_state)
-            else:
-                break
-        return c
 
 
 class CutFinderEKS(CutFinder):
@@ -65,7 +49,7 @@ class CutFinderIMExclusiveChoice(CutFinder):
 
     def find_cut_dfg(self, dfg):
         connected_components = nx.strongly_connected_components(dfg) #BUG de sander?
-        return Cut(Cut.operator.xor, connected_components)
+        return Cut(Operator.xor, connected_components)
 
 
 class CutFinderIMSequence(CutFinder):
@@ -118,7 +102,7 @@ class CutFinderIMSequence(CutFinder):
         result = []
         result.addAll(condensed_graph_2.nodes) #implementar addAll
         sort(result, Comparator) #implementar comparador
-        return Cut(Cut.operator.sequence, result)
+        return Cut(Operator.sequence, result)
 
 
 class CutFinderIMParallel(CutFinder):
@@ -220,7 +204,7 @@ class CutFinderIMParallel(CutFinder):
             for cc in ccs:
                 set4.add(cc)
             connected_components2[0] = set4
-        return Cut(Cut.operator.parallel, connected_components2)
+        return Cut(Operator.parallel, connected_components2)
 
 
 class CutFinderIMParallelWithMinimumSelfDistance(CutFinder):
@@ -326,7 +310,7 @@ class CutFinderIMLoop(CutFinder):
         for s in result:
             if len(s) > 0:
                 result2.add(s)
-        return Cut(Cut.operator.loop, result2)
+        return Cut(Operator.loop, result2)
 
     def label_connected_components(self, graph, node, connected_components, connected_component):
         if node not in connected_components.keys:
@@ -355,3 +339,16 @@ class CutFinderIMSequenceReachability:
     def find_reachable_from(self, to_node):
         pass
 
+
+class CutFinderIM(CutFinder):
+
+    cut_finders = [CutFinderIMExclusiveChoice(), CutFinderIMSequence(), CutFinderIMParallelWithMinimumSelfDistance(), CutFinderIMLoop(), CutFinderIMParallel()]
+
+    def find_cut(self, input_log, log_info, miner_state):
+        c = None
+        for cf in self.cut_finders:
+            if c is None or not c.is_valid():
+                c = cf.find_cut(input_log, log_info, miner_state)
+            else:
+                break
+        return c

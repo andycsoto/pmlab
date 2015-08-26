@@ -1,6 +1,7 @@
 __author__ = 'alcifuen'
 
 from cut import Cut
+from cut import Operator
 
 
 class LogSplitter():
@@ -24,25 +25,25 @@ class LogSplitterIMi(LogSplitter):
         noise = {}      #MultiSet<XEventClass>
         map_sigma_2_sublog = {}    #Map<Set<XEventClass>, IMLog>
         map_activity_2_sigma = {}  #Map<XEventClass, Set<XEventClass>>
-        for sigma in cut.partition():
+        for sigma in cut.partition:
             sublog = log.Log()
             result.append(sublog)
             map_sigma_2_sublog[sigma] = sublog
             for activity in sigma:
                 map_activity_2_sigma[activity] = sigma
-        for trace in log:
-            if cut.operator() == Cut.Operator.xor:
-                self.splitXor(result, trace, cut.partition(), log.get_case_freq(trace), map_sigma_2_sublog, map_activity_2_sigma, noise)
-            elif cut.operator() == Cut.Operator.sequence:
-                self.splitSequence(result, trace, cut.partition(), log.get_case_freq(trace), map_sigma_2_sublog, map_activity_2_sigma, noise)
-            elif cut.operator() == Cut.Operator.parallel:
-                self.splitParallel(result, trace, cut.partition(), log.get_case_freq(trace), map_sigma_2_sublog, map_activity_2_sigma, noise)
-            elif cut.operator() == Cut.Operator.loop:
-                self.splitLoop(result, trace, cut.partition(), log.get_case_freq(trace), map_sigma_2_sublog, map_activity_2_sigma, noise)
+        for trace in log.get_cases():
+            if cut.operator == Operator.xor:
+                self.split_xor(result, trace, cut.partition, log.get_case_freq(trace), map_sigma_2_sublog, map_activity_2_sigma, noise)
+            elif cut.operator == Operator.sequence:
+                self.split_sequence(result, trace, cut.partition, log.get_case_freq(trace), map_sigma_2_sublog, map_activity_2_sigma, noise)
+            elif cut.operator == Operator.parallel:
+                self.split_parallel(result, trace, cut.partition, log.get_case_freq(trace), map_sigma_2_sublog, map_activity_2_sigma, noise)
+            elif cut.operator == Operator.loop:
+                self.split_loop(result, trace, cut.partition, log.get_case_freq(trace), map_sigma_2_sublog, map_activity_2_sigma, noise)
         return LogSplitter.LogSplitResult(result, noise)
 
     def split_xor(self, result, trace, partition, cardinality, map_sigma_2_sublog, map_activity_2_sigma, noise):
-        if trace.size() == 0:
+        if len(trace) == 0:
             for sublog in result:
                 sublog.add(trace, cardinality)
             return
@@ -52,8 +53,8 @@ class LogSplitterIMi(LogSplitter):
         max_counter = 0
         max_sigma = set()
         for event in trace:
-            sigma = map_activity_2_sigma.get(event)
-            new_counter = event_counter.get(sigma) + 1
+            sigma = map_activity_2_sigma[event]
+            new_counter = event_counter[sigma] + 1
             if new_counter > max_counter:
                 max_counter = new_counter
                 max_sigma = sigma

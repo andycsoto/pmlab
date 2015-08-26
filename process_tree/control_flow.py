@@ -18,8 +18,8 @@ class Node(ProcessTreeElement):
         self.rem_write_vars = set()
         self.incoming = incoming
 
-    def add_parent(self, parent, expression=Edge.NOEXPRESSION,  uid=uuid.uuid4()):
-        e = Edge(uid, parent, self, expression)
+    def add_parent(self, parent, expression=data.Edge.NOEXPRESSION,  uid=uuid.uuid4()):
+        e = data.Edge(uid, parent, self, expression)
         self.tree.add_edge(e)
         self.add_incoming_edge(e)
         self.read_vars.update(expression.variables)
@@ -47,37 +47,3 @@ class Node(ProcessTreeElement):
 
     def __str__(self):
         return self.tree.__str__(self)
-
-
-class Edge(ProcessTreeElement):
-
-    NOEXPRESSION = data.Expression()
-
-    def __init__(self, uid=uuid.uuid4(), source=None, target=None, expression=None, blockable=False, hideable=False):
-        super(Edge).__init__(uid, source.name + " -> " + target.name())
-        self.source = source
-        self.target = target
-        source.add_outgoing_edge(self)
-        target.add_incoming_edge(self)
-        self.expression = expression
-        self.blockable = blockable
-        self.hideable = hideable
-        self.expressions = set()
-        self.remExpressions = set()
-
-    def is_blockable(self):
-        return self.blockable
-
-    def is_hideable(self):
-        return self.hideable
-
-    def __str__(self):
-        return str(self.source) + " -> " + str(self.target)
-
-    def has_expression(self):
-        return not Edge.NOEXPRESSION.equals(self.expression)
-    
-
-
-
-

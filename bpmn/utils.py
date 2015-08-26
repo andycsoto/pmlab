@@ -24,12 +24,14 @@ class BPMN_Element(object):
         print 'internal name:', self.internal_name
         print 'inset:', ' '.join([e.internal_name for e in self.inset])
         print 'outset:', ' '.join([e.internal_name for e in self.outset])
-    
+
+
 class Event(BPMN_Element):
     static_counter = 0
     allowed_subtypes = ['start','end']
+
     def __init__(self, subtype, name=None):
-        super(Event,self).__init__(name)
+        super(Event, self).__init__(name)
         self.type = 'event'
         self.subtype = subtype
         self.internal_name = self.type+'{0}'.format(Event.static_counter)

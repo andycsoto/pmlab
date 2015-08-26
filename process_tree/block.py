@@ -8,7 +8,7 @@ class Block(cf.Node):
     def __init__(self, uid=uuid.uuid4(), name=None, incoming=[], outgoing=[]):
         if name is None:
             name = str(uid)
-        super(Block).__init__(uid, name, incoming)
+        super(Block, self).__init__(uid, name, incoming)
         self.outgoing = outgoing
         self.changeable = False
 
@@ -85,7 +85,7 @@ class XOR(Block):
     def __init__(self, uid=uuid.uuid4(), name=None, incoming=[], outgoing=[] ):
         if name is None:
             name = str(uid)
-        super(XOR).__init__(uid, name, incoming, outgoing)
+        super(XOR, self).__init__(uid, name, incoming, outgoing)
         
     def ordering_of_childern_matters(self):
         return True
@@ -101,7 +101,7 @@ class OR(Block):
     def __init__(self, uid=uuid.uuid4(), name=None, incoming=[], outgoing=[] ):
         if name is None:
             name = str(uid)
-        super(OR).__init__(uid, name, incoming, outgoing)
+        super(OR, self).__init__(uid, name, incoming, outgoing)
         
     def ordering_of_childern_matters(self):
         return True
@@ -117,7 +117,7 @@ class LoopXOR(Block):
     def __init__(self, uid=uuid.uuid4(), name=None, incoming=[], outgoing=[] ):
         if name is None:
             name = str(uid)
-        super(LoopXOR).__init__(uid, name, incoming, outgoing)
+        super(LoopXOR, self).__init__(uid, name, incoming, outgoing)
         
     def ordering_of_childern_matters(self):
         return True
@@ -133,7 +133,7 @@ class DEF(Block):
     def __init__(self, uid=uuid.uuid4(), name=None, incoming=[], outgoing=[] ):
         if name is None:
             name = str(uid)
-        super(DEF).__init__(uid, name, incoming, outgoing)
+        super(DEF, self).__init__(uid, name, incoming, outgoing)
         
     def ordering_of_childern_matters(self):
         return True
@@ -149,7 +149,7 @@ class AND(Block):
     def __init__(self, uid=uuid.uuid4(), name=None, incoming=[], outgoing=[] ):
         if name is None:
             name = str(uid)
-        super(AND).__init__(uid, name, incoming, outgoing)
+        super(AND, self).__init__(uid, name, incoming, outgoing)
         
     def ordering_of_childern_matters(self):
         return False
@@ -165,7 +165,7 @@ class SEQ(Block):
     def __init__(self, uid=uuid.uuid4(), name=None, incoming=[], outgoing=[] ):
         if name is None:
             name = str(uid)
-        super(SEQ).__init__(uid, name, incoming, outgoing)
+        super(SEQ, self).__init__(uid, name, incoming, outgoing)
         
     def ordering_of_childern_matters(self):
         return True
@@ -181,7 +181,7 @@ class LoopDEF(Block):
     def __init__(self, uid=uuid.uuid4(), name=None, incoming=[], outgoing=[] ):
         if name is None:
             name = str(uid)
-        super(LoopDEF).__init__(uid, name, incoming, outgoing)
+        super(LoopDEF, self).__init__(uid, name, incoming, outgoing)
         
     def ordering_of_childern_matters(self):
         return True
@@ -197,7 +197,7 @@ class PlaceHolder(Block):
     def __init__(self, uid=uuid.uuid4(), name=None, incoming=[], outgoing=[] ):
         if name is None:
             name = str(uid)
-        super(PlaceHolder).__init__(uid, name, incoming, outgoing)
+        super(PlaceHolder, self).__init__(uid, name, incoming, outgoing)
         
     def ordering_of_childern_matters(self):
         return False
@@ -213,12 +213,12 @@ class Event(Block):
     def __init__(self, uid=uuid.uuid4(), name=None, message=None, incoming=None, outgoing=None):
         if name is None:
             name = str(uid)
-        super(Event).__init__(uid, name)
+        super(Event, self).__init__(uid, name)
         self.message = message
         self.add_incoming_edge(incoming)
         self.add_outgoing_edge(outgoing)
         
-    def isChangeable():
+    def isChangeable(self):
         return False
 
 
@@ -226,7 +226,7 @@ class TimeOut(Event):
     def __init__(self, uid=uuid.uuid4(), name=None, message=None, incoming=None, outgoing=None):
         if name is None:
             name = str(uid)
-        super(TimeOut).__init__(uid, name, message, incoming, outgoing)
+        super(TimeOut, self).__init__(uid, name, message, incoming, outgoing)
         
     def ordering_of_childern_matters(self):
         return False
@@ -242,7 +242,7 @@ class Message(Event):
     def __init__(self, uid=uuid.uuid4(), name=None, message=None, incoming=None, outgoing=None):
         if name is None:
             name = str(uid)
-        super(TimeOut).__init__(uid, name, message, incoming, outgoing)
+        super(TimeOut, self).__init__(uid, name, message, incoming, outgoing)
         
     def ordering_of_childern_matters(self):
         return False

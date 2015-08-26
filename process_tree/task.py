@@ -7,7 +7,7 @@ class Task(cf.Node):
     def __init__(self, uid=uuid.uuid4, name=None):
         if name is None:
             name=str(uid)
-        super(Task).__init__(uid, name)
+        super(Task, self).__init__(uid, name)
         
     def get_read_variables_recursive(self):
         read_vars = set()
@@ -25,18 +25,19 @@ class Task(cf.Node):
     def is_leaf(self):
         return True
 
+
 class Automatic(Task):
     def __init__(self, uid=uuid.uuid4, name=None):
         if name is None:
             name=str(uid)
-        super(Automatic).__init__(uid, name)
+        super(Automatic, self).__init__(uid, name)
 
 
 class Manual(Task):
     def __init__(self, uid=uuid.uuid4, name=None, originators=list()):
         if name is None:
             name=str(uid)
-        super(Manual).__init__(uid, name)
+        super(Manual, self).__init__(uid, name)
         self.originators=originators
         self.rem_originators=set()
         
@@ -48,5 +49,3 @@ class Manual(Task):
         
     def remove_originator(self, originator=None):
         return self.originators.remove(originator)
-        
-        

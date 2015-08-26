@@ -3,33 +3,48 @@ import process_tree
 import mining_parameters as mp
 import cut
 import control_flow as cf
+import task
 import log_splitter as ls
 
 
 def process_tree_from_file(input_file, mining_parameters):
-    #log = pmlab.log.log_from_file('/Users/alcifuen/Dropbox/TESIS/Logs_Mauro/Lfull.xes')
+    #log = pmlab.log.log_from_file('/Users/alcifuen/Dropbox/TESIS/Logs_Mauro/running-example-just-two-cases.xes')
     input_log = log.log_from_file(input_file)
     process_tree_from_log(input_log, mining_parameters)
 
 
-def process_tree_from_log(input_log, mining_parameters, method='inductive_miner'):
+def process_tree_from_log(input_log, mining_parameters=mp.MiningParametersEKS(0.2), method='inductive_miner'):
     if method is 'inductive_miner':
         inductive_mine_process_tree(input_log, mining_parameters)
 
 
 def inductive_mine_process_tree(input_log, mining_parameters):
-    tree = process_tree.ProcessTree.process_tree_no_params()
+    tree = process_tree.ProcessTree()
     miner_state = mp.MinerState(mining_parameters)
     root = inductive_mine_node(input_log, tree, miner_state)
-    #root.setProcessTree(tree);
-	#tree.setRoot(root);
-    #//reduce if necessary
-	#	if (parameters.isReduce()) {
-	#		ReduceTree.reduceTree(tree);
-	#		debug("after reduction " + tree.getRoot(), minerState);
-	#	}
-	#return tree
-    pass
+    root.tree = tree
+    tree.root = root
+    return tree
+
+
+#root.setProcessTree(tree);
+#tree.setRoot(root);
+#//reduce if necessary
+#	if (parameters.isReduce()) {
+#		ReduceTree.reduceTree(tree);
+#		debug("after reduction " + tree.getRoot(), minerState);
+#	}
+#return tree
+
+
+def new_node(operator):
+    if operator == cut.Operator.xor:
+        return cf.Block()
+
+
+def add_node(tree, node):
+    node.tree = tree
+    tree.add_node(node)
 
 
 def inductive_mine_node(input_log, tree, miner_state):
@@ -39,66 +54,54 @@ def inductive_mine_node(input_log, tree, miner_state):
         return base_case
     cut = find_cut(input_log, log_info, miner_state)
     if cut is not None and cut.is_valid():
-        split_result = split_log(input_log, log_info, cut)
-        new_node = new_node(cut.get_operator())
-        add_node(tree, new_node)
+        split_result = split_log(input_log, log_info, cut, miner_state)
+        new_n = new_node(cut.get_operator())
+        add_node(tree, new_n)
         #recurse
-        if cut.get_operator() != Operator.loop:
+        if cut.operator != cut.Cut.Operator.loop:
             for sub_log in split_result.sub_logs:
                 child = inductive_mine_node(sub_log, tree)
-                new_node.add_child(child)
+                new_n.add_child(child)
         else:
             #it = split_result.sub_logs.iterator()
             it = split_result.sub_logs
             #first_sub_log = it.next()
             first_sub_log = it.next()
             first_child = inductive_mine_node(first_sub_log, tree)
-            new_node.add_child(first_child)
+            new_n.add_child(first_child)
             if split_result.sub_logs.size > 2:
-                redoXor = Xor("")
+                redoXor = cut.Cut.Xor("")
                 add_node(tree, redoXor)
-                new_node.add_child(redoXor)
+                new_n.add_child(redoXor)
             else:
-                redoXor = new_node
+                redoXor = new_n
             while it.hasNext():
                 sub_log = it.next()
                 child = inductive_mine_node(sub_log, tree)
                 redoXor.add_child(child)
-            tau = AbstractTask.Automatic("tau")
+            tau = task.Task.Automatic("tau")
             add_node(tree, tau)
-            new_node.add_child(tau)
-        return new_node
+            new_n.add_child(tau)
+        return new_n
     else:
         return find_fall_through(input_log, log_info, tree)
 
 
-def new_node(operator):
-    if operator == cut.Operator.xor:
-        return cf.Block()
-
-
 def find_base_cases(input_log, log_info, tree, miner_state):
     n = None
-    it = iter(miner_state.parameters.base_case_finders)
-    while True:
-        next_bcf = next(it, None)
-        if next_bcf is not None:
-            n = next_bcf.find_base_cases(input_log, log_info, tree)
-        else:
-            break
+    for bcf in miner_state.parameters.base_case_finders:
+        n = bcf.find_base_cases(input_log, log_info, tree, miner_state)
     return n
 
 
 def find_cut(input_log, log_info, miner_state):
     c = None
-    it = iter(miner_state.parameters.cut_finders)
-    while True:
-        next_cf = next(it, None)
-        if next_cf is not None and (c is None or not c.is_valid()):
-            c = next_cf.find_cut(input_log, log_info, miner_state)
+    for case_finder in miner_state.parameters.cut_finders:
+        if c is None or not c.is_valid():
+            c = case_finder.find_cut(input_log, log_info, miner_state)
         else:
             break
-    return c
+        return c
 
 
 def split_log(input_log, log_info, cut, miner_state):
@@ -109,11 +112,6 @@ def split_log(input_log, log_info, cut, miner_state):
 
 def find_fall_through(input_log, log_info, tree, miner_state):
     n = None
-    it = iter(miner_state.parameters.fall_throughs)
-    while True:
-        next_ft = next(it, None)
-        if next_ft is not None and n is None:
-            n = next_ft.fall_through(input_log, log_info, tree, miner_state)
-        else:
-            break
+    for ft in miner_state.parameters.fall_throughs:
+        n = ft.fall_through(input_log, log_info, cut, miner_state)
     return n

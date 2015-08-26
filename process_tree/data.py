@@ -2,7 +2,6 @@ __author__ = 'alcifuen'
 
 import uuid
 from general import ProcessTreeElement
-from control_flow import Edge
 
 
 class Variable(ProcessTreeElement):
@@ -16,7 +15,7 @@ class Expression(ProcessTreeElement):
     def __init__(self, uid=uuid.uuid4(), name=None, expression='', variables=set()):
         if name is None:
             name = str(uid)
-        super(Expression, self.__init__(self, uid, name))
+        super(Expression, self).__init__(uid, name)
         self.expression = expression
         self.variables = variables
 
@@ -46,7 +45,7 @@ class Expression(ProcessTreeElement):
 class NOEXPRESSION(Expression):
 
     def __init__(self):
-        super(NOEXPRESSION, self.__init__())
+        super(NOEXPRESSION, self).__init__()
         self.uid = None
         self.name = ""
         self.variables = set()
@@ -63,3 +62,32 @@ class NOEXPRESSION(Expression):
 
     def remove_variable(self, var):
         return False
+
+
+class Edge(ProcessTreeElement):
+
+    NOEXPRESSION = Expression()
+
+    def __init__(self, uid=uuid.uuid4(), source=None, target=None, expression=None, blockable=False, hideable=False):
+        super(Edge, self).__init__(uid, source.name + " -> " + target.name())
+        self.source = source
+        self.target = target
+        source.add_outgoing_edge(self)
+        target.add_incoming_edge(self)
+        self.expression = expression
+        self.blockable = blockable
+        self.hideable = hideable
+        self.expressions = set()
+        self.remExpressions = set()
+
+    def is_blockable(self):
+        return self.blockable
+
+    def is_hideable(self):
+        return self.hideable
+
+    def __str__(self):
+        return str(self.source) + " -> " + str(self.target)
+
+    def has_expression(self):
+        return not Edge.NOEXPRESSION.equals(self.expression)

@@ -25,8 +25,8 @@ class BaseCaseFinderIMiEmptyLog(BaseCaseFinder):
 class BaseCaseFinderIMiEmptyTrace(BaseCaseFinder):
 
     def find_base_cases(self, input_log, log_info, tree, miner_state):
-        if log_info.number_of_empty_traces != 0:
-            if log_info.number_of_empty_traces < (log_info.highest_trace_cardinality * miner_state.parameters.noise_threshold):
+        if log_info.number_of_epsilon_traces != 0:
+            if log_info.number_of_epsilon_traces < (log_info.highest_trace_cardinality * miner_state.parameters.noise_threshold):
                 new_node = utils.inductive_mine_node(input_log, tree, miner_state)
                 return new_node
             else:
@@ -50,7 +50,7 @@ class BaseCaseFinderIMiEmptyTrace(BaseCaseFinder):
 class BaseCaseFinderIMiSingleActivity(BaseCaseFinder):
 
     def find_base_cases(self, input_log, log_info, tree, miner_state):
-        if log_info.activities.size() == 1:
+        if len(log_info.activities) == 1:
             p = input_log.size() / (log_info.numberOfEvents + input_log.size() * 1.0)
             if 0.5 - miner_state.parameters.noiseThreshold <= p <= 0.5 + miner_state.parameters.noiseThreshold:
                 activity = log_info.activities.iterator().next()
