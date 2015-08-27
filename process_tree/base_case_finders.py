@@ -1,5 +1,6 @@
 __author__ = 'alcifuen'
 import utils
+import task
 
 
 class BaseCaseFinder:
@@ -15,8 +16,8 @@ class BaseCaseFinderIMiEmptyLog(BaseCaseFinder):
 
     def find_base_cases(self, input_log, log_info, tree, miner_state):
         if log_info.number_of_events == 0:
-            node = "tau"
-            node.set_process_tree(tree)
+            node = task.Automatic("tau")
+            node.tree = tree
             tree.add_node(node)
             return node
         return None

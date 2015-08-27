@@ -24,28 +24,28 @@ class ProcessTreeElement(object):
 
 
 class ProcessTree(ProcessTreeElement):
-    nodes = None
-    edges = None
-    variables = None
-    originators = None
-    expressions = None
-    root = None
-    start_index = None
 
     def __init__(self, id=uuid.uuid4(), name=str(id)):
         super(ProcessTree, self).__init__(id, name)
+        self.nodes = {}
+        self.edges = set()
+        self.variables = set()
+        self.originators = []
+        self.expressions = set()
+        self.root = None
+        self.start_index = 0
 
     #De la linea 201 en adelante (no pesques el constructor gigante).
 
     def add_node(self, node):
-        if node in self.nodes.keys:
+        if node in self.nodes:
             return False
         self.nodes[node] = self.start_index+1
         node.tree = self
         return True
         
     def is_tree(self):
-        return is_tree2(self, self.root, [False]*self.start_index)
+        return self.is_tree2(self, self.root, [False]*self.start_index)
         
     def is_tree2(self, node, visited):
         node_index = self.nodes[node]

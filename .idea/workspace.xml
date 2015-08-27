@@ -2,18 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="75ec089e-e4da-4224-8fd7-9e06822420db" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/process_tree/__init__.py" afterPath="$PROJECT_DIR$/process_tree/__init__.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/process_tree/cut.py" afterPath="$PROJECT_DIR$/process_tree/cut_n_finders.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/log/__init__.py" afterPath="$PROJECT_DIR$/log/__init__.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/process_tree/base_case_finders.py" afterPath="$PROJECT_DIR$/process_tree/base_case_finders.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/process_tree/block.py" afterPath="$PROJECT_DIR$/process_tree/block.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/process_tree/control_flow.py" afterPath="$PROJECT_DIR$/process_tree/control_flow.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/process_tree/cut.py" afterPath="$PROJECT_DIR$/process_tree/cut.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/process_tree/data.py" afterPath="$PROJECT_DIR$/process_tree/data.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/process_tree/general.py" afterPath="$PROJECT_DIR$/process_tree/general.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/process_tree/log_splitter.py" afterPath="$PROJECT_DIR$/process_tree/log_splitter.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/process_tree/mining_parameters.py" afterPath="$PROJECT_DIR$/process_tree/mining_parameters.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/process_tree/resources.py" afterPath="$PROJECT_DIR$/process_tree/resources.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/process_tree/task.py" afterPath="$PROJECT_DIR$/process_tree/task.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bpmn/utils.py" afterPath="$PROJECT_DIR$/bpmn/utils.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/log/utils.py" afterPath="$PROJECT_DIR$/log/utils.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/process_tree/utils.py" afterPath="$PROJECT_DIR$/process_tree/utils.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -41,9 +38,31 @@
       <file leaf-file-name="utils.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/process_tree/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="56" column="0" selection-start="1596" selection-end="1596" vertical-scroll-proportion="-4.52" vertical-offset="727" max-vertical-offset="1830">
+            <state line="63" column="0" selection-start="1852" selection-end="1852" vertical-scroll-proportion="-4.24" vertical-offset="839" max-vertical-offset="1950">
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="block.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/process_tree/block.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="67" column="21" selection-start="2054" selection-end="2054" vertical-scroll-proportion="0.0" vertical-offset="847" max-vertical-offset="3900">
+              <folding>
+                <element signature="e#24#49#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="log_splitter.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/process_tree/log_splitter.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="28" column="0" selection-start="696" selection-end="696" vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="2310">
+              <folding>
+                <element signature="e#25#54#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -52,27 +71,18 @@
       <file leaf-file-name="base_case_finders.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/process_tree/base_case_finders.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="52" column="35" selection-start="1588" selection-end="1588" vertical-scroll-proportion="0.0" vertical-offset="609" max-vertical-offset="975">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="log_splitter.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/process_tree/log_splitter.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="35" selection-start="694" selection-end="694" vertical-scroll-proportion="0.2103825" vertical-offset="328" max-vertical-offset="2235">
+            <state line="20" column="31" selection-start="463" selection-end="463" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="990">
               <folding>
-                <element signature="e#25#44#0" expanded="true" />
+                <element signature="e#24#36#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="cut.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/process_tree/cut.py">
+      <file leaf-file-name="cut_n_finders.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/process_tree/cut_n_finders.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="19" column="24" selection-start="446" selection-end="446" vertical-scroll-proportion="-9.0" vertical-offset="60" max-vertical-offset="5385">
+            <state line="110" column="0" selection-start="3659" selection-end="3659" vertical-scroll-proportion="-2.0849674" vertical-offset="2288" max-vertical-offset="5805">
               <folding>
                 <element signature="e#24#45#0" expanded="true" />
               </folding>
@@ -83,7 +93,7 @@
       <file leaf-file-name="pmlabtest.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../pmlabtest.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="4" selection-start="488" selection-end="488" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
+            <state line="10" column="0" selection-start="463" selection-end="463" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
               <folding>
                 <element signature="e#0#16#0" expanded="true" />
               </folding>
@@ -91,21 +101,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="mining_parameters.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/process_tree/mining_parameters.py">
+      <file leaf-file-name="digraph.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file:///Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/networkx/classes/digraph.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="0" selection-start="937" selection-end="937" vertical-scroll-proportion="0.0" vertical-offset="311" max-vertical-offset="690">
-              <folding>
-                <element signature="e#85#97#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="utils.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bpmn/utils.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="4" selection-start="964" selection-end="964" vertical-scroll-proportion="0.0" vertical-offset="480" max-vertical-offset="6795">
+            <state line="484" column="0" selection-start="15378" selection-end="15378" vertical-scroll-proportion="0.0" vertical-offset="7086" max-vertical-offset="18615">
               <folding />
             </state>
           </provider>
@@ -114,7 +113,43 @@
       <file leaf-file-name="general.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/process_tree/general.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="0" selection-start="545" selection-end="545" vertical-scroll-proportion="0.0" vertical-offset="60" max-vertical-offset="885">
+            <state line="39" column="8" selection-start="972" selection-end="972" vertical-scroll-proportion="0.0" vertical-offset="465" max-vertical-offset="885">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="utils.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/log/utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="268" column="12" selection-start="10619" selection-end="10623" vertical-scroll-proportion="-23.04" vertical-offset="3309" max-vertical-offset="9780">
+              <folding>
+                <element signature="e#19140#19550#0" expanded="false" />
+                <element signature="e#19654#19861#0" expanded="false" />
+                <element signature="e#19901#20463#0" expanded="false" />
+                <element signature="e#20967#21167#0" expanded="false" />
+                <element signature="e#21224#21480#0" expanded="false" />
+                <element signature="e#21518#21642#0" expanded="false" />
+                <element signature="e#21693#22363#0" expanded="false" />
+                <element signature="e#22447#23606#0" expanded="false" />
+                <element signature="e#23655#24296#0" expanded="false" />
+                <element signature="e#24376#25523#0" expanded="false" />
+                <element signature="e#25602#27238#0" expanded="false" />
+                <element signature="e#27285#27617#0" expanded="false" />
+                <element signature="e#27667#28004#0" expanded="false" />
+                <element signature="e#28040#28569#0" expanded="false" />
+                <element signature="e#28633#29212#0" expanded="false" />
+                <element signature="e#29274#29759#0" expanded="false" />
+                <element signature="e#29831#32707#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/log/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1" column="25" selection-start="47" selection-end="47" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="225">
               <folding />
             </state>
           </provider>
@@ -138,29 +173,29 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/process_tree/fall_through.py" />
-        <option value="$PROJECT_DIR$/process_tree/controlFlow.py" />
-        <option value="$PROJECT_DIR$/process_tree/__init__.py" />
-        <option value="$PROJECT_DIR$/../pmlabtest.py" />
-        <option value="$PROJECT_DIR$/process_tree/block.py" />
         <option value="$PROJECT_DIR$/process_tree/data.py" />
         <option value="$PROJECT_DIR$/process_tree/resources.py" />
-        <option value="$PROJECT_DIR$/process_tree/task.py" />
-        <option value="$PROJECT_DIR$/process_tree/general.py" />
         <option value="$PROJECT_DIR$/process_tree/control_flow.py" />
         <option value="$PROJECT_DIR$/bpmn/utils.py" />
-        <option value="$PROJECT_DIR$/process_tree/base_case_finders.py" />
         <option value="$PROJECT_DIR$/process_tree/cut.py" />
-        <option value="$PROJECT_DIR$/process_tree/utils.py" />
         <option value="$PROJECT_DIR$/process_tree/mining_parameters.py" />
+        <option value="$PROJECT_DIR$/process_tree/task.py" />
+        <option value="$PROJECT_DIR$/process_tree/general.py" />
+        <option value="$PROJECT_DIR$/process_tree/block.py" />
+        <option value="$PROJECT_DIR$/process_tree/utils.py" />
+        <option value="$PROJECT_DIR$/../pmlabtest.py" />
+        <option value="$PROJECT_DIR$/process_tree/base_case_finders.py" />
+        <option value="$PROJECT_DIR$/log/utils.py" />
+        <option value="$PROJECT_DIR$/log/__init__.py" />
+        <option value="$PROJECT_DIR$/process_tree/cut_n_finders.py" />
         <option value="$PROJECT_DIR$/process_tree/log_splitter.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="655" />
+    <option name="x" value="-7" />
     <option name="y" value="22" />
-    <option name="width" value="1038" />
+    <option name="width" value="1440" />
     <option name="height" value="814" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -174,7 +209,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectReloadState">
-    <option name="STATE" value="0" />
+    <option name="STATE" value="1" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
@@ -189,7 +224,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -238,17 +272,18 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="project.propVCSSupport.Ignored.Files" />
-    <property name="restartRequiresConfirmation" value="true" />
+    <property name="recentsLimit" value="5" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../processTree" />
+    <property name="restartRequiresConfirmation" value="true" />
     <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -460,19 +495,19 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="655" y="22" width="1038" height="814" extended-state="0" />
+    <frame x="-7" y="22" width="1440" height="814" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295129" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2191977" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295129" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40634006" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2369186" sideWeight="0.44412607" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15817694" sideWeight="0.61959654" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4481268" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34870318" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14922658" sideWeight="0.45689654" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.115737475" sideWeight="0.5691643" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.43083572" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20042343" sideWeight="0.30472103" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.38040346" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37896255" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -486,19 +521,19 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295129" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2191977" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40767047" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40634006" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.44827586" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.54310346" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20042343" sideWeight="0.30472103" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295129" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2369186" sideWeight="0.44412607" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14922658" sideWeight="0.45689654" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15897755" sideWeight="0.5186782" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27586207" sideWeight="0.45689654" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24925373" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.50143677" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37931034" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -513,133 +548,191 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/../pmlabtest.py</url>
-          <line>11</line>
-          <option name="timeStamp" value="77" />
+          <url>file://$PROJECT_DIR$/process_tree/utils.py</url>
+          <line>27</line>
+          <option name="timeStamp" value="94" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/process_tree/cut.py</url>
-          <line>347</line>
-          <option name="timeStamp" value="78" />
+          <url>file://$PROJECT_DIR$/process_tree/log_splitter.py</url>
+          <line>43</line>
+          <option name="timeStamp" value="149" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/process_tree/utils.py</url>
+          <line>63</line>
+          <option name="timeStamp" value="175" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/process_tree/cut_n_finders.py</url>
+          <line>224</line>
+          <option name="timeStamp" value="180" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/process_tree/utils.py</url>
+          <line>70</line>
+          <option name="timeStamp" value="181" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/process_tree/log_splitter.py</url>
+          <line>34</line>
+          <option name="timeStamp" value="197" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/process_tree/log_splitter.py</url>
+          <line>28</line>
+          <option name="timeStamp" value="199" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="79" />
+      <option name="time" value="200" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/process_tree/__init__.py">
+    <entry file="file://$PROJECT_DIR$/process_tree/mining_parameters.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="0" selection-start="111" selection-end="111" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="135" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/process_tree/block.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="244" column="27" selection-start="6860" selection-end="6860" vertical-scroll-proportion="0.0" vertical-offset="3517" max-vertical-offset="3870" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/process_tree/resources.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="24" selection-start="823" selection-end="823" vertical-scroll-proportion="0.0" vertical-offset="189" max-vertical-offset="555" />
+        <state line="37" column="0" selection-start="937" selection-end="937" vertical-scroll-proportion="0.0" vertical-offset="311" max-vertical-offset="690">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/process_tree/task.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="50" selection-start="1441" selection-end="1441" vertical-scroll-proportion="0.0" vertical-offset="172" max-vertical-offset="825" />
+        <state line="31" column="19" selection-start="765" selection-end="765" vertical-scroll-proportion="0.0" vertical-offset="277" max-vertical-offset="825">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/process_tree/data.py">
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/networkx/utils/decorators.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="35" selection-start="234" selection-end="252" vertical-scroll-proportion="0.0" vertical-offset="160" max-vertical-offset="1470">
+        <state line="65" column="0" selection-start="1673" selection-end="1673" vertical-scroll-proportion="0.41907513" vertical-offset="725" max-vertical-offset="3390">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/process_tree/control_flow.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="32" selection-start="513" selection-end="513" vertical-scroll-proportion="0.0" vertical-offset="209" max-vertical-offset="810">
-          <folding />
+        <state line="5" column="0" selection-start="88" selection-end="88" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="195">
+          <folding>
+            <element signature="e#25#63#0" expanded="true" />
+            <element signature="e#127#1327#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/process_tree/general.py">
+    <entry file="file://$PROJECT_DIR$/process_tree/data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="0" selection-start="545" selection-end="545" vertical-scroll-proportion="0.0" vertical-offset="165" max-vertical-offset="885">
-          <folding />
+        <state line="12" column="35" selection-start="234" selection-end="252" vertical-scroll-proportion="0.0" vertical-offset="160" max-vertical-offset="1470">
+          <folding>
+            <element signature="e#25#36#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/bpmn/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="4" selection-start="964" selection-end="964" vertical-scroll-proportion="0.0" vertical-offset="303" max-vertical-offset="6750">
+        <state line="350" column="14" selection-start="16854" selection-end="16854" vertical-scroll-proportion="0.0" vertical-offset="5089" max-vertical-offset="6750">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../pmlabtest.py">
+    <entry file="file://$PROJECT_DIR$/process_tree/block.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="4" selection-start="488" selection-end="488" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
+        <state line="67" column="21" selection-start="2054" selection-end="2054" vertical-scroll-proportion="0.0" vertical-offset="847" max-vertical-offset="3900">
           <folding>
-            <element signature="e#0#16#0" expanded="true" />
+            <element signature="e#24#49#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cnet/cn_stp.py">
+    <entry file="file://$PROJECT_DIR$/process_tree/general.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="5" selection-start="235" selection-end="235" vertical-scroll-proportion="0.1724138" vertical-offset="0" max-vertical-offset="11040">
+        <state line="39" column="8" selection-start="972" selection-end="972" vertical-scroll-proportion="0.0" vertical-offset="465" max-vertical-offset="885">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/process_tree/mining_parameters.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="0" selection-start="937" selection-end="937" vertical-scroll-proportion="0.0" vertical-offset="311" max-vertical-offset="690">
-          <folding>
-            <element signature="e#85#97#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/process_tree/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="0" selection-start="1596" selection-end="1596" vertical-scroll-proportion="-4.52" vertical-offset="727" max-vertical-offset="1830">
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/process_tree/cut.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="24" selection-start="446" selection-end="446" vertical-scroll-proportion="-9.0" vertical-offset="60" max-vertical-offset="5385">
-          <folding>
-            <element signature="e#24#45#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/log/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="364" column="54" selection-start="16389" selection-end="16389" vertical-scroll-proportion="4.4153004" vertical-offset="3709" max-vertical-offset="13710">
+        <state line="268" column="12" selection-start="10619" selection-end="10623" vertical-scroll-proportion="-23.04" vertical-offset="3309" max-vertical-offset="9780">
+          <folding>
+            <element signature="e#19140#19550#0" expanded="false" />
+            <element signature="e#19654#19861#0" expanded="false" />
+            <element signature="e#19901#20463#0" expanded="false" />
+            <element signature="e#20967#21167#0" expanded="false" />
+            <element signature="e#21224#21480#0" expanded="false" />
+            <element signature="e#21518#21642#0" expanded="false" />
+            <element signature="e#21693#22363#0" expanded="false" />
+            <element signature="e#22447#23606#0" expanded="false" />
+            <element signature="e#23655#24296#0" expanded="false" />
+            <element signature="e#24376#25523#0" expanded="false" />
+            <element signature="e#25602#27238#0" expanded="false" />
+            <element signature="e#27285#27617#0" expanded="false" />
+            <element signature="e#27667#28004#0" expanded="false" />
+            <element signature="e#28040#28569#0" expanded="false" />
+            <element signature="e#28633#29212#0" expanded="false" />
+            <element signature="e#29274#29759#0" expanded="false" />
+            <element signature="e#29831#32707#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/log/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="25" selection-start="47" selection-end="47" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="225">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/process_tree/base_case_finders.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="35" selection-start="1588" selection-end="1588" vertical-scroll-proportion="0.0" vertical-offset="685" max-vertical-offset="975">
-          <folding />
+        <state line="20" column="31" selection-start="463" selection-end="463" vertical-scroll-proportion="0.0" vertical-offset="184" max-vertical-offset="990">
+          <folding>
+            <element signature="e#24#36#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/process_tree/log_splitter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="35" selection-start="694" selection-end="694" vertical-scroll-proportion="0.2103825" vertical-offset="328" max-vertical-offset="2235">
+        <state line="28" column="0" selection-start="696" selection-end="696" vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="2310">
           <folding>
-            <element signature="e#25#44#0" expanded="true" />
+            <element signature="e#25#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/process_tree/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="63" column="0" selection-start="1852" selection-end="1852" vertical-scroll-proportion="-4.24" vertical-offset="839" max-vertical-offset="1950">
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../pmlabtest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="0" selection-start="463" selection-end="463" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/networkx/classes/digraph.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="484" column="0" selection-start="15378" selection-end="15378" vertical-scroll-proportion="0.0" vertical-offset="7086" max-vertical-offset="18615">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/process_tree/cut_n_finders.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="110" column="0" selection-start="3659" selection-end="3659" vertical-scroll-proportion="-2.0849674" vertical-offset="2288" max-vertical-offset="5805">
+          <folding>
+            <element signature="e#24#45#0" expanded="true" />
           </folding>
         </state>
       </provider>

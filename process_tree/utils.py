@@ -1,10 +1,11 @@
 import log
 import process_tree
 import mining_parameters as mp
-import cut
+import cut_n_finders
 import control_flow as cf
 import task
 import log_splitter as ls
+import block
 
 
 def process_tree_from_file(input_file, mining_parameters):
@@ -38,8 +39,15 @@ def inductive_mine_process_tree(input_log, mining_parameters):
 
 
 def new_node(operator):
-    if operator == cut.Operator.xor:
-        return cf.Block()
+    if operator == cut_n_finders.Operator.xor:
+        return block.XOR("")
+    elif operator == cut_n_finders.Operator.sequence:
+        return block.SEQ("")
+    elif operator == cut_n_finders.Operator.parallel:
+        return block.AND()
+    elif operator == cut_n_finders.Operator.loop:
+        return block.LoopXOR("")
+    return None
 
 
 def add_node(tree, node):
@@ -55,11 +63,11 @@ def inductive_mine_node(input_log, tree, miner_state):
     cut = find_cut(input_log, log_info, miner_state)
     if cut is not None and cut.is_valid():
         split_result = split_log(input_log, log_info, cut, miner_state)
-        new_n = new_node(cut.get_operator())
+        new_n = new_node(cut.operator)
         add_node(tree, new_n)
         #recurse
-        if cut.operator != cut.Cut.Operator.loop:
-            for sub_log in split_result.sub_logs:
+        if cut.operator != cut_n_finders.Operator.loop:
+            for sub_log in split_result.sublogs:
                 child = inductive_mine_node(sub_log, tree)
                 new_n.add_child(child)
         else:
@@ -70,7 +78,7 @@ def inductive_mine_node(input_log, tree, miner_state):
             first_child = inductive_mine_node(first_sub_log, tree)
             new_n.add_child(first_child)
             if split_result.sub_logs.size > 2:
-                redoXor = cut.Cut.Xor("")
+                redoXor = cut_n_finders.Xor("")
                 add_node(tree, redoXor)
                 new_n.add_child(redoXor)
             else:
@@ -113,5 +121,5 @@ def split_log(input_log, log_info, cut, miner_state):
 def find_fall_through(input_log, log_info, tree, miner_state):
     n = None
     for ft in miner_state.parameters.fall_throughs:
-        n = ft.fall_through(input_log, log_info, cut, miner_state)
+        n = ft.fall_through(input_log, log_info, cut_n_finders, miner_state)
     return n

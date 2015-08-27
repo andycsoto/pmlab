@@ -1,6 +1,7 @@
 __author__ = 'alcifuen'
-import control_flow.py as cf
+import control_flow as cf
 import uuid
+import data
 
 
 class Block(cf.Node):
@@ -44,15 +45,15 @@ class Block(cf.Node):
     def is_leaf(self):
         return False
 
-    def add_child(self, child, expression=cf.Edge.NOEXPRESSION):
-        e = cf.Edge(self, child, expression)
+    def add_child(self, child, expression=data.Edge.NOEXPRESSION):
+        e = data.Edge(self, child, expression)
         self.tree.add_edge(e)
         self.add_outgoing_edge(e)
         self.read_vars.update(expression.variables)
         return e
 
-    def add_child_at(self, child, index, expression=cf.Edge.NOEXPRESSION):
-        e = cf.Edge(self, child, expression)
+    def add_child_at(self, child, index, expression=data.Edge.NOEXPRESSION):
+        e = data.Edge(self, child, expression)
         self.tree.add_edge(e)
         self.add_outgoing_edge_at(e, index)
         return e

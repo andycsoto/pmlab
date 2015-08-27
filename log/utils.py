@@ -276,12 +276,12 @@ class LogInfo:
             read_trace = []
             for ec in trace:
                 if ec not in self.activities:
-                    self.activities[ec]=cardinality
+                    self.activities[ec] = cardinality
                 else:
                     self.activities[ec] += cardinality
                 if ec not in self.directly_follows_graph:
-                    self.directly_follows_graph.add_node(ec,weight=1)
-                    self.eventually_follows_graph.add_node(ec,weight=1)
+                    self.directly_follows_graph.add_node(ec, weight=1)
+                    self.eventually_follows_graph.add_node(ec, weight=1)
                 from_event_class = to_event_class
                 to_event_class = ec
                 #add connections to the eventually-follows graph

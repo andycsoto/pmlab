@@ -29,7 +29,7 @@ class Task(cf.Node):
 class Automatic(Task):
     def __init__(self, uid=uuid.uuid4, name=None):
         if name is None:
-            name=str(uid)
+            name = str(uid)
         super(Automatic, self).__init__(uid, name)
 
 

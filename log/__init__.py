@@ -1,4 +1,5 @@
 from utils import Log
+from utils import LogInfo
 from utils import EnhancedLog
 from utils import log_from_file
 from utils import log_from_iterable

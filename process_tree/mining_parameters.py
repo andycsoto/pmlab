@@ -7,7 +7,7 @@ Created on Wed Jan 07 12:27:30 2015
 import utils
 import networkx as nx
 import base_case_finders as bcf
-import cut
+import cut_n_finders
 import log_splitter as ls
 import resources
 
@@ -28,7 +28,7 @@ class MiningParametersEKS(MiningParameters):
     def __init__(self, noise_threshold):
         super(MiningParametersEKS, self).__init__(noise_threshold)
         self.base_case_finders = [bcf.BaseCaseFinderIMiEmptyLog(), bcf.BaseCaseFinderIMiEmptyTrace(), bcf.BaseCaseFinderIMiSingleActivity()]
-        self.cut_finders = [cut.CutFinderIM(), cut.CutFinderEKS()]
+        self.cut_finders = [cut_n_finders.CutFinderIM(), cut_n_finders.CutFinderEKS()]
         self.log_splitter = ls.LogSplitterIMi()
 
 

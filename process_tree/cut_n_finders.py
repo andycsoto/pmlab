@@ -1,6 +1,7 @@
 __author__ = 'alcifuen'
 import networkx as nx
 import enum
+import log
 
 Operator = enum.Enum('operator', 'xor sequence parallel loop')
 
@@ -14,7 +15,7 @@ class Cut:
         self.partition = partition
 
     def is_valid(self):
-        if self.operator is None and self.partition.size() <= 1:
+        if self.operator is None or len(self.partition) <= 1:
             return False
         for part in self.partition:
             if len(part) == 0:
@@ -48,11 +49,13 @@ class CutFinderIMExclusiveChoice(CutFinder):
         return self.find_cut_dfg(dfg)
 
     def find_cut_dfg(self, dfg):
-        connected_components = nx.strongly_connected_components(dfg) #BUG de sander?
+        connected_components = list(nx.connected_components(dfg.to_undirected()))
+        #connected_components = list(nx.connected_components(dfg))
         return Cut(Operator.xor, connected_components)
 
 
 class CutFinderIMSequence(CutFinder):
+    scr2 = None
 
     def find_cut(self, input_log, log_info, miner_state):
         return self.find_cut_dfg(log_info.directly_follows_graph)
@@ -61,10 +64,11 @@ class CutFinderIMSequence(CutFinder):
         return self.find_cut_dfg(dfg)
 
     def find_cut_dfg(self, dfg):
-        sccs = nx.strongly_connected_components(dfg)
+        sccs = list(nx.strongly_connected_components(dfg))
         condensed_graph_1 = nx.DiGraph()
-        condensed_graph_1.add_nodes_from(sccs)
-        for edge in dfg.edges:
+        for scc in sccs:
+            condensed_graph_1.add_node(str(scc))
+        for edge in dfg.edges():
             u = edge[0]
             for scc in sccs:
                 if u in scc:
@@ -74,54 +78,62 @@ class CutFinderIMSequence(CutFinder):
                 if v in scc:
                     sccv = scc
             if sccv != sccu:
-                condensed_graph_1.add_edge(sccu, sccv)
+                condensed_graph_1.add_edge(str(sccu), str(sccv))
         xor_graph = nx.DiGraph()
         xor_graph.add_nodes_from(condensed_graph_1)
         scr1 = CutFinderIMSequenceReachability(condensed_graph_1)
-        for node in condensed_graph_1.nodes:
+        for node in condensed_graph_1.nodes():
             reachable_from_to = scr1.get_reachable_from_to(node)
-            not_reachable = difference(condensed_graph_1.nodes, reachable_from_to) #implementar difference
-            not_reachable.remove(node) #revisar si remove hace lo mismo que en prom
+            not_reachable = set(condensed_graph_1.nodes()).difference(reachable_from_to)
+            if node in not_reachable:
+                not_reachable.remove(node)
             for node2 in not_reachable:
                 xor_graph.add_edge(node, node2)
         xor_condensed_nodes = nx.strongly_connected_components(xor_graph) #BUG3 Sander?
         condensed_graph_2 = nx.DiGraph()
-        condensed_graph_2.add_nodes_from(xor_condensed_nodes)
-        for edge in condensed_graph_1.edges:
-            u = edge[0]
-            for scc in condensed_graph_2.nodes:
-                if u.iterator.next() in scc:
+        for n in xor_condensed_nodes:
+            condensed_graph_2.add_node(tuple(n))
+        for edge in condensed_graph_1.edges():
+            u = (edge[0],)
+            for scc in condensed_graph_2.nodes():
+                if u in scc:
                     sccu = scc
-            v = edge[1]
-            for scc in condensed_graph_2.nodes:
-                if v.iterator.next() in scc:
-                    sccu = scc
+            v = (edge[1],)
+            for scc in condensed_graph_2.nodes():
+                if v in scc:
+                    sccv = scc
             if sccv != sccu:
-                condensed_graph_2.add_edge(sccu, sccv)
-        scr2 = CutFinderIMSequenceReachability(condensed_graph_2)
+                condensed_graph_2.add_edge(tuple(sccu), tuple(sccv))
+        self.scr2 = CutFinderIMSequenceReachability(condensed_graph_2)
         result = []
-        result.addAll(condensed_graph_2.nodes) #implementar addAll
-        sort(result, Comparator) #implementar comparador
+        result.extend(condensed_graph_2.nodes())
+        result.sort(self.compare)
         return Cut(Operator.sequence, result)
+
+    def compare(self, x, y):
+        if y in self.scr2.get_reachable_from(x):
+            return 1
+        else:
+            return -1
 
 
 class CutFinderIMParallel(CutFinder):
 
     def find_cut_log_info_ms(self, log_info, miner_state):
-        return self.find_cut(log_info.start_activities, log_info.end_activities, log_info.directly_follows_graph, None, None)
+        return self.find_cut(log_info.start_activities, log_info.end_activities, log_info.directly_follows_graph, None)
 
-    def find_cut(self, start_activities, end_activities, dfg, minimum_self_distance_between, *args):
+    def find_cut(self, start_activities, end_activities, dfg, minimum_self_distance_between):
         #noise filtering can have removed all start and end activities
         #if that is the case, return
         if len(start_activities) == 0 or len(end_activities) == 0:
             return None
         #construct the negated graph
-        negated_graph = nx.Digraph()
+        negated_graph = nx.DiGraph()
         #add the vertices
         negated_graph.add_nodes_from(dfg)
         #walk through the edges and negate them
-        for e1 in dfg.nodes:
-            for e2 in dfg.nodes:
+        for e1 in dfg.nodes():
+            for e2 in dfg.nodes():
                 if e1 != e2:
                     found_edge = dfg.get_edge_data(e1, e2, default=False)
                     if found_edge is not False:
@@ -135,8 +147,8 @@ class CutFinderIMParallel(CutFinder):
         #have the same directly-follows graph as a parallel operator would have.
         #Make sure that activities on the minimum-self-distance-path are not
         #separated by a parallel operator.
-        if minimum_self_distance_between(*args) is not None:
-            for activity in dfg.nodes:
+        if minimum_self_distance_between is not None:
+            for activity in dfg.nodes():
                 for activity2 in minimum_self_distance_between(activity):
                     negated_graph.add_edge(activity, activity2)
         #compute the connected components of the negated path
@@ -209,8 +221,8 @@ class CutFinderIMParallel(CutFinder):
 
 class CutFinderIMParallelWithMinimumSelfDistance(CutFinder):
 
-    def find_cut(self, input_log, log_info, miner_state, activity):
-        return CutFinderIMParallel.find_cut(log_info.start_activities, log_info.end_activities, log_info.directly_follows_graph, log_info.get_min_self_distances_between_act, activity)
+    def find_cut(self, input_log, log_info, miner_state):
+        return CutFinderIMParallel().find_cut(log_info.start_activities, log_info.end_activities, log_info.directly_follows_graph, log.LogInfo.get_min_self_distances_between_act)
 
 
 class CutFinderIMLoop(CutFinder):
@@ -328,16 +340,32 @@ class CutFinderIMSequenceReachability:
         self.condensed_graph = graph
 
     def get_reachable_from_to(self, node):
-        pass
+        r = self.find_reachable_to(node)
+        r.update(self.find_reachable_from(node))
+        return r
 
     def get_reachable_from(self, node):
         return self.find_reachable_from(node)
 
     def find_reachable_to(self, from_node):
-        pass
+        if from_node not in self.reachable_to:
+            reached = set()
+            for edge in self.condensed_graph.out_edges(from_node):
+                target = edge[1]
+                reached.add(target)
+                reached.update(self.find_reachable_to(target))
+            self.reachable_to[from_node] = reached
+        return self.reachable_to[from_node]
 
     def find_reachable_from(self, to_node):
-        pass
+        if to_node not in self.reachable_from:
+            reached = set()
+            for edge in self.condensed_graph.in_edges(to_node):
+                target = edge[0]
+                reached.add(target)
+                reached.update(self.find_reachable_from(target))
+            self.reachable_from[to_node] = reached
+        return self.reachable_from[to_node]
 
 
 class CutFinderIM(CutFinder):
