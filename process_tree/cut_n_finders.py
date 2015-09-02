@@ -64,21 +64,22 @@ class CutFinderIMSequence(CutFinder):
         return self.find_cut_dfg(dfg)
 
     def find_cut_dfg(self, dfg):
-        sccs = list(nx.strongly_connected_components(dfg))
         condensed_graph_1 = nx.DiGraph()
-        for scc in sccs:
-            condensed_graph_1.add_node(str(scc))
+        for scc in nx.strongly_connected_components(dfg):
+            condensed_graph_1.add_node(tuple(scc))
         for edge in dfg.edges():
+            sccu = None
+            sccv = None
             u = edge[0]
-            for scc in sccs:
+            for scc in nx.strongly_connected_components(dfg):
                 if u in scc:
-                    sccu = scc
+                    sccu = tuple(scc)
             v = edge[1]
-            for scc in sccs:
+            for scc in nx.strongly_connected_components(dfg):
                 if v in scc:
-                    sccv = scc
+                    sccv = tuple(scc)
             if sccv != sccu:
-                condensed_graph_1.add_edge(str(sccu), str(sccv))
+                condensed_graph_1.add_edge(sccu, sccv)
         xor_graph = nx.DiGraph()
         xor_graph.add_nodes_from(condensed_graph_1)
         scr1 = CutFinderIMSequenceReachability(condensed_graph_1)
@@ -89,24 +90,26 @@ class CutFinderIMSequence(CutFinder):
                 not_reachable.remove(node)
             for node2 in not_reachable:
                 xor_graph.add_edge(node, node2)
-        xor_condensed_nodes = nx.strongly_connected_components(xor_graph) #BUG3 Sander?
         condensed_graph_2 = nx.DiGraph()
-        for n in xor_condensed_nodes:
-            condensed_graph_2.add_node(tuple(n))
+        for n in nx.strongly_connected_components(xor_graph):
+            for n1 in n:
+                condensed_graph_2.add_node(tuple(n1))
         for edge in condensed_graph_1.edges():
-            u = (edge[0],)
+            sccu = None
+            sccv = None
+            u = edge[0]
             for scc in condensed_graph_2.nodes():
-                if u in scc:
-                    sccu = scc
-            v = (edge[1],)
+                if u[0] in scc:
+                    sccu = tuple(scc)
+            v = edge[1]
             for scc in condensed_graph_2.nodes():
-                if v in scc:
-                    sccv = scc
+                if v[0] in set(scc):
+                    sccv = tuple(scc)
             if sccv != sccu:
                 condensed_graph_2.add_edge(tuple(sccu), tuple(sccv))
         self.scr2 = CutFinderIMSequenceReachability(condensed_graph_2)
         result = []
-        result.extend(condensed_graph_2.nodes())
+        result.extend(set(condensed_graph_2.nodes()))
         result.sort(self.compare)
         return Cut(Operator.sequence, result)
 
@@ -239,7 +242,7 @@ class CutFinderIMLoop(CutFinder):
             connected_components[end_activity] = 0
         #find the other connected components
         ccs = 1
-        for node in graph.nodes:
+        for node in graph.nodes():
             if node not in connected_components.keys():
                 self.label_connected_components(graph, node, connected_components, ccs)
                 ccs += 1
@@ -248,7 +251,8 @@ class CutFinderIMLoop(CutFinder):
         cc = 0
         while cc < ccs:
             sub_start_activities[cc] = {}
-        for node in graph.nodes:
+            cc += 1
+        for node in graph.nodes():
             cc = connected_components[node]
             for edge in graph.in_edges(node):
                 if cc != connected_components[edge[0]]:
@@ -261,7 +265,8 @@ class CutFinderIMLoop(CutFinder):
         cc = 0
         while cc < ccs:
             sub_end_activities[cc] = {}
-        for node in graph.nodes:
+            cc += 1
+        for node in graph.nodes():
             cc = connected_components[node]
             for edge in graph.out_edges(node):
                 if cc != connected_components[edge[1]]:
@@ -271,7 +276,7 @@ class CutFinderIMLoop(CutFinder):
                     sub_end_activities[cc] = end
         #initialize the candidates
         candidates = []
-        candidates[0] = False
+        candidates.append(False)
         for i in range(1, ccs):
             candidates[i] = True
         #exclude all candidates that are reachable from the start activities
@@ -295,6 +300,7 @@ class CutFinderIMLoop(CutFinder):
                     found_edge = graph.get_edge_data(node1, node2, default=False)
                     if not found_edge:
                         candidates[cc] = False
+            cc += 1
         #exclude all candidates that have no connection from all end activites
         cc = 0
         while cc < ccs:
@@ -304,12 +310,13 @@ class CutFinderIMLoop(CutFinder):
                     found_edge = graph.get_edge_data(node2, node1, default=False)
                     if not found_edge:
                         candidates[cc] = False
+            cc += 1
         #make the lists of sets of nodes
         result = []
         for i in range(0, ccs):
             result.append(set())
         #divide the activities
-        for node in graph.nodes:
+        for node in graph.nodes():
             if candidates[connected_components[node]]:
                 index = connected_components[node]
             else:

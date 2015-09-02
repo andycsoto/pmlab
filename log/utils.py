@@ -47,6 +47,8 @@ def log_from_file(filename, format=None, universal_newline=False,
             format = 'raw'
         elif ext == '.xes':
             format = 'xes'
+        elif ext == '.csv':
+            format = 'csv'
         else:
             raise TypeError, ('Could not determine the format of the file. '
                                 'Specify manually')

@@ -57,7 +57,7 @@ def add_node(tree, node):
 
 def inductive_mine_node(input_log, tree, miner_state):
     log_info = log.create_logInfo(input_log)
-    base_case = find_base_cases(log, log_info, tree, miner_state)
+    base_case = find_base_cases(input_log, log_info, tree, miner_state)
     if base_case is not None:
         return base_case
     cut = find_cut(input_log, log_info, miner_state)
@@ -68,7 +68,7 @@ def inductive_mine_node(input_log, tree, miner_state):
         #recurse
         if cut.operator != cut_n_finders.Operator.loop:
             for sub_log in split_result.sublogs:
-                child = inductive_mine_node(sub_log, tree)
+                child = inductive_mine_node(sub_log, tree, miner_state)
                 new_n.add_child(child)
         else:
             #it = split_result.sub_logs.iterator()
