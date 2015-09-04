@@ -52,10 +52,11 @@ class BaseCaseFinderIMiSingleActivity(BaseCaseFinder):
 
     def find_base_cases(self, input_log, log_info, tree, miner_state):
         if len(log_info.activities) == 1:
-            p = input_log.size() / (log_info.numberOfEvents + input_log.size() * 1.0)
-            if 0.5 - miner_state.parameters.noiseThreshold <= p <= 0.5 + miner_state.parameters.noiseThreshold:
-                activity = log_info.activities.iterator().next()
-                node = activity.id
-                node.set_process_tree(tree)
+            p = len(input_log.cases) / (log_info.number_of_events + len(input_log.cases) * 1.0)
+            if 0.5 - miner_state.parameters.noise_threshold <= p <= 0.5 + miner_state.parameters.noise_threshold:
+                activity = iter(log_info.activities).next()
+                node = task.Task(name=str(activity))
+                node.tree = tree
                 tree.add_node(node)
+                return node
         return None

@@ -88,7 +88,7 @@ class LogSplitterIMi(LogSplitter):
                 else:
                     noise[event] = cardinality
             sublog = map_sigma_2_sublog.get(sigma)
-            for x in range(1, cardinality):
+            for x in range(0, cardinality):
                 sublog.cases.append(new_trace)
             last_position = at_position
             i += 1
@@ -130,10 +130,11 @@ class LogSplitterIMi(LogSplitter):
             subtrace = []
             map_sigma_2_subtrace[sigma] = subtrace
         for event in trace:
-            sigma = map_sigma_2_subtrace.get(event)
-            map_sigma_2_subtrace.get(sigma).add(event)
+            sigma = map_activity_2_sigma[event]
+            map_sigma_2_subtrace[sigma].append(event)
         for sigma in partition:
-            map_sigma_2_sublog.get(sigma).add(map_sigma_2_subtrace.get(sigma), cardinality)
+            for x in range(0, cardinality):
+                map_sigma_2_sublog[sigma].cases.append(map_sigma_2_subtrace[sigma])
 
     def split_loop(self, result, trace, partition, cardinality, map_sigma_2_sublog, map_activity_2_sigma, noise):
         partial_trace = []

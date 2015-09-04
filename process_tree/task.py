@@ -6,7 +6,7 @@ import uuid
 class Task(cf.Node):
     def __init__(self, uid=uuid.uuid4, name=None):
         if name is None:
-            name=str(uid)
+            name = str(uid)
         super(Task, self).__init__(uid, name)
         
     def get_read_variables_recursive(self):

@@ -27,7 +27,7 @@ class Node(ProcessTreeElement):
 
     def add_incoming_edge(self, edge):
         if edge not in self.incoming:
-            self.incoming.add(edge)
+            self.incoming.append(edge)
 
     def remove_incoming_edge(self, edge):
         return self.incoming.remove(edge)

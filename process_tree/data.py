@@ -1,16 +1,15 @@
 __author__ = 'alcifuen'
-
 import uuid
-from general import ProcessTreeElement
+import general
 
 
-class Variable(ProcessTreeElement):
+class Variable(general.ProcessTreeElement):
     def __init__(self, id=uuid.uuid4(), name=str(id)):
         self.id = id
         self.name = name
 
 
-class Expression(ProcessTreeElement):
+class Expression(general.ProcessTreeElement):
 
     def __init__(self, uid=uuid.uuid4(), name=None, expression='', variables=set()):
         if name is None:
@@ -64,12 +63,14 @@ class NOEXPRESSION(Expression):
         return False
 
 
-class Edge(ProcessTreeElement):
+class Edge(general.ProcessTreeElement):
 
     NOEXPRESSION = Expression()
 
-    def __init__(self, uid=uuid.uuid4(), source=None, target=None, expression=None, blockable=False, hideable=False):
-        super(Edge, self).__init__(uid, source.name + " -> " + target.name())
+    def __init__(self, uid=None, source=None, target=None, expression=None, blockable=False, hideable=False):
+        if uid == None:
+            uid = uuid.uuid4()
+        super(Edge, self).__init__(uid, source.name + " -> " + target.name)
         self.source = source
         self.target = target
         source.add_outgoing_edge(self)

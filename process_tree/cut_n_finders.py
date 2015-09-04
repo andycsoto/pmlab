@@ -125,7 +125,7 @@ class CutFinderIMParallel(CutFinder):
     def find_cut_log_info_ms(self, log_info, miner_state):
         return self.find_cut(log_info.start_activities, log_info.end_activities, log_info.directly_follows_graph, None)
 
-    def find_cut(self, start_activities, end_activities, dfg, minimum_self_distance_between):
+    def find_cut(self, start_activities, end_activities, dfg, minimum_self_distance_between, *msdb_params):
         #noise filtering can have removed all start and end activities
         #if that is the case, return
         if len(start_activities) == 0 or len(end_activities) == 0:
@@ -152,15 +152,15 @@ class CutFinderIMParallel(CutFinder):
         #separated by a parallel operator.
         if minimum_self_distance_between is not None:
             for activity in dfg.nodes():
-                for activity2 in minimum_self_distance_between(activity):
+                for activity2 in minimum_self_distance_between(msdb_params[0], activity):
                     negated_graph.add_edge(activity, activity2)
         #compute the connected components of the negated path
-        connected_components = nx.strongly_connected_components(negated_graph) #DUDA
+        connected_components = list(nx.connected_components(negated_graph.to_undirected()))
         #not all connected components are guaranteed to have start/end activities.
-        ccs_with_start_end = []
-        ccs_with_start = []
-        ccs_with_end = []
-        ccs_with_nothing = []
+        ccs_with_start_end = ()
+        ccs_with_start = ()
+        ccs_with_end = ()
+        ccs_with_nothing = ()
         for cc in connected_components:
             has_start = True
             if len(set(cc).intersection(set(start_activities))) == 0:
@@ -170,19 +170,21 @@ class CutFinderIMParallel(CutFinder):
                 has_end = False
             if has_start:
                 if has_end:
-                    ccs_with_start_end.append(cc)
+                    ccs_with_start_end += tuple(cc)
                 else:
-                    ccs_with_start.append(cc)
+                    ccs_with_start += tuple(cc)
             else:
                 if has_end:
-                    ccs_with_end.append(cc)
+                    ccs_with_end += tuple(cc)
                 else:
-                    ccs_with_nothing.append(cc)
+                    ccs_with_nothing += tuple(cc)
         #if there is no set with both start/end activities, there is no parallel cut.
         if len(ccs_with_start_end) == 0:
             return None
         #add full sets
-        connected_components2 = set(ccs_with_start_end)
+        connected_components2 = []
+        for y in ccs_with_start_end:
+            connected_components2.append((y,))
         #add combinations of end-only and start-only components
         start_counter = 0
         end_counter = 0
@@ -194,7 +196,7 @@ class CutFinderIMParallel(CutFinder):
             for ccs in ccs_with_end[end_counter]:
                 for cc in ccs:
                     set1.add(cc)
-            connected_components2.add(set1)
+            connected_components2.add(tuple(set1))
             start_counter += 1
             end_counter += 1
         #the start-only components can be added to any set
@@ -225,7 +227,7 @@ class CutFinderIMParallel(CutFinder):
 class CutFinderIMParallelWithMinimumSelfDistance(CutFinder):
 
     def find_cut(self, input_log, log_info, miner_state):
-        return CutFinderIMParallel().find_cut(log_info.start_activities, log_info.end_activities, log_info.directly_follows_graph, log.LogInfo.get_min_self_distances_between_act)
+        return CutFinderIMParallel().find_cut(log_info.start_activities, log_info.end_activities, log_info.directly_follows_graph, log.LogInfo.get_min_self_distances_between_act, log_info)
 
 
 class CutFinderIMLoop(CutFinder):
@@ -328,7 +330,7 @@ class CutFinderIMLoop(CutFinder):
         result2 = []
         for s in result:
             if len(s) > 0:
-                result2.add(s)
+                result2.append(s)
         return Cut(Operator.loop, result2)
 
     def label_connected_components(self, graph, node, connected_components, connected_component):

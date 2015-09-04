@@ -46,7 +46,7 @@ class Block(cf.Node):
         return False
 
     def add_child(self, child, expression=data.Edge.NOEXPRESSION):
-        e = data.Edge(self, child, expression)
+        e = data.Edge(None, self, child, expression)
         self.tree.add_edge(e)
         self.add_outgoing_edge(e)
         self.read_vars.update(expression.variables)

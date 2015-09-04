@@ -43,6 +43,9 @@ class ProcessTree(ProcessTreeElement):
         self.nodes[node] = self.start_index+1
         node.tree = self
         return True
+
+    def add_edge(self, edge):
+        self.edges.add(edge)
         
     def is_tree(self):
         return self.is_tree2(self, self.root, [False]*self.start_index)
