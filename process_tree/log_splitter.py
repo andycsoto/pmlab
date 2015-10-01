@@ -32,15 +32,15 @@ class LogSplitterIMi(LogSplitter):
             map_sigma_2_sublog[sigma] = sublog
             for activity in sigma:
                 map_activity_2_sigma[activity] = sigma
-        for trace in input_log.get_cases():
+        for trace in input_log.get_uniq_cases():
             if cut.operator == Operator.xor:
-                self.split_xor(result, trace, cut.partition, input_log.get_case_freq(trace), map_sigma_2_sublog, map_activity_2_sigma, noise)
+                self.split_xor(result, trace, cut.partition, input_log.get_case_freq(list(trace)), map_sigma_2_sublog, map_activity_2_sigma, noise)
             elif cut.operator == Operator.sequence:
-                self.split_sequence(result, trace, cut.partition, input_log.get_case_freq(trace), map_sigma_2_sublog, map_activity_2_sigma, noise)
+                self.split_sequence(result, trace, cut.partition, input_log.get_case_freq(list(trace)), map_sigma_2_sublog, map_activity_2_sigma, noise)
             elif cut.operator == Operator.parallel:
-                self.split_parallel(result, trace, cut.partition, input_log.get_case_freq(trace), map_sigma_2_sublog, map_activity_2_sigma, noise)
+                self.split_parallel(result, trace, cut.partition, input_log.get_case_freq(list(trace)), map_sigma_2_sublog, map_activity_2_sigma, noise)
             elif cut.operator == Operator.loop:
-                self.split_loop(result, trace, cut.partition, input_log.get_case_freq(trace), map_sigma_2_sublog, map_activity_2_sigma, noise)
+                self.split_loop(result, trace, cut.partition, input_log.get_case_freq(list(trace)), map_sigma_2_sublog, map_activity_2_sigma, noise)
         return LogSplitter.LogSplitResult(result, noise)
 
     def split_xor(self, result, trace, partition, cardinality, map_sigma_2_sublog, map_activity_2_sigma, noise):
@@ -63,11 +63,12 @@ class LogSplitterIMi(LogSplitter):
         new_trace = []
         for event in trace:
             if event in max_sigma:
-                new_trace.add(event)
+                new_trace.append(event)
             else:
                 noise.add(event, cardinality)
         sublog = map_sigma_2_sublog.get(max_sigma)
-        sublog.add(new_trace, cardinality)
+        for x in range(0, cardinality):
+            sublog.cases.append(new_trace)
         map_sigma_2_sublog[max_sigma] = sublog
 
     def split_sequence(self, result, trace, partition, cardinality, map_sigma_2_sublog, map_activity_2_sigma, noise):
@@ -138,13 +139,16 @@ class LogSplitterIMi(LogSplitter):
 
     def split_loop(self, result, trace, partition, cardinality, map_sigma_2_sublog, map_activity_2_sigma, noise):
         partial_trace = []
-        last_sigma = set(iter(partition).next())
+        last_sigma = iter(partition).next()
         for event in trace:
-            if event in last_sigma is False:
-                map_sigma_2_sublog.get(last_sigma).add(partial_trace, cardinality)
+            if event not in last_sigma:
+                for x in range(0, cardinality):
+                    map_sigma_2_sublog[last_sigma].cases.append(partial_trace)
                 partial_trace = []
-                lastSigma = map_activity_2_sigma.get(event)
-            partial_trace.add(event)
-        map_sigma_2_sublog.get(lastSigma).add(partial_trace, cardinality)
-        if lastSigma != iter(partition).next():
-            map_sigma_2_sublog.get(lastSigma).add([], cardinality)
+                last_sigma = map_activity_2_sigma[event]
+            partial_trace.append(event)
+        for x in range(0, cardinality):
+            map_sigma_2_sublog[last_sigma].cases.append(partial_trace)
+        if last_sigma != iter(partition).next():
+            for x in range(0, cardinality):
+                map_sigma_2_sublog[last_sigma].cases.append([])

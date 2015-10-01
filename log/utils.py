@@ -31,6 +31,7 @@ def log_from_file(filename, format=None, universal_newline=False,
         opening the filename.
     See function 'log_from_iterable' for the rest of the parameters.
     """
+    print("Loading log from file")
     own_fid = False
     name = None
     if isinstance(filename, basestring): #a filename
@@ -65,6 +66,7 @@ def log_from_file(filename, format=None, universal_newline=False,
         raise ValueError, 'Unknown log format.'
     if own_fid:
         file.close()
+    print("Log loaded")
     return log
 
 def log_from_iterable( file, filename=None, format=None, uniq_cases=False,

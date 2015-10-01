@@ -71,31 +71,34 @@ def inductive_mine_node(input_log, tree, miner_state):
                 child = inductive_mine_node(sub_log, tree, miner_state)
                 new_n.add_child(child)
         else:
-            #it = split_result.sub_logs.iterator()
-            it = split_result.sub_logs
-            #first_sub_log = it.next()
+            it = iter(split_result.sublogs)
             first_sub_log = it.next()
-            first_child = inductive_mine_node(first_sub_log, tree)
+            #XQ ESTA ENTRANDO A FALLTHROUGH
+            first_child = inductive_mine_node(first_sub_log, tree, miner_state)
             new_n.add_child(first_child)
-            if split_result.sub_logs.size > 2:
+            if len(split_result.sublogs) > 2:
                 redoXor = cut_n_finders.Xor("")
                 add_node(tree, redoXor)
                 new_n.add_child(redoXor)
             else:
                 redoXor = new_n
-            while it.hasNext():
-                sub_log = it.next()
-                child = inductive_mine_node(sub_log, tree)
-                redoXor.add_child(child)
-            tau = task.Task.Automatic("tau")
+            while True:
+                sub_log = next(it, None)
+                if sub_log is not None:
+                    child = inductive_mine_node(sub_log, tree, miner_state)
+                    redoXor.add_child(child)
+                else:
+                    break
+            tau = task.Automatic("tau")
             add_node(tree, tau)
             new_n.add_child(tau)
         return new_n
     else:
-        return find_fall_through(input_log, log_info, tree)
+        return find_fall_through(input_log, log_info, tree, miner_state)
 
 
 def find_base_cases(input_log, log_info, tree, miner_state):
+    print("Finding Base Cases")
     n = None
     for bcf in miner_state.parameters.base_case_finders:
         n = bcf.find_base_cases(input_log, log_info, tree, miner_state)
@@ -103,12 +106,14 @@ def find_base_cases(input_log, log_info, tree, miner_state):
 
 
 def find_cut(input_log, log_info, miner_state):
+    print("Finding Cut")
     c = None
     for case_finder in miner_state.parameters.cut_finders:
         if c is None or not c.is_valid():
             c = case_finder.find_cut(input_log, log_info, miner_state)
         else:
             break
+        print("Returning Cut: "+str(c.operator))
         return c
 
 
