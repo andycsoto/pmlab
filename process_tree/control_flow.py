@@ -7,9 +7,13 @@ import uuid
 
 class Node(ProcessTreeElement):
 
-    def __init__(self, uid=uuid.uuid4(), name=None, incoming=[]):
+    def __init__(self, uid=None, name=None, incoming=None):
+        if uid is None:
+            uid = uuid.uuid4()
         if name is None:
             name = str(uid)
+        if incoming is None:
+            incoming = []
         super(Node, self).__init__(uid, name)
         self.tree = None
         self.read_vars = set()
@@ -18,7 +22,9 @@ class Node(ProcessTreeElement):
         self.rem_write_vars = set()
         self.incoming = incoming
 
-    def add_parent(self, parent, expression=data.Edge.NOEXPRESSION,  uid=uuid.uuid4()):
+    def add_parent(self, parent, expression=data.Edge.NOEXPRESSION, uid=None):
+        if uid is None:
+            uid = uuid.uuid4()
         e = data.Edge(uid, parent, self, expression)
         self.tree.add_edge(e)
         self.add_incoming_edge(e)

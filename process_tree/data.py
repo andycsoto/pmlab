@@ -4,14 +4,20 @@ import general
 
 
 class Variable(general.ProcessTreeElement):
-    def __init__(self, id=uuid.uuid4(), name=str(id)):
-        self.id = id
+    def __init__(self, uid=None, name=None):
+        if uid is None:
+            uid = uuid.uuid4()
+        if name is None:
+            name = str(uid)
+        self.uid = uid
         self.name = name
 
 
 class Expression(general.ProcessTreeElement):
 
-    def __init__(self, uid=uuid.uuid4(), name=None, expression='', variables=set()):
+    def __init__(self, uid=None, name=None, expression='', variables=set()):
+        if uid is None:
+            uid = uuid.uuid4()
         if name is None:
             name = str(uid)
         super(Expression, self).__init__(uid, name)
@@ -68,7 +74,7 @@ class Edge(general.ProcessTreeElement):
     NOEXPRESSION = Expression()
 
     def __init__(self, uid=None, source=None, target=None, expression=None, blockable=False, hideable=False):
-        if uid == None:
+        if uid is None:
             uid = uuid.uuid4()
         super(Edge, self).__init__(uid, source.name + " -> " + target.name)
         self.source = source

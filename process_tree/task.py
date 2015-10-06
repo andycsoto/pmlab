@@ -4,7 +4,9 @@ import uuid
 
 
 class Task(cf.Node):
-    def __init__(self, uid=uuid.uuid4, name=None):
+    def __init__(self, uid=None, name=None):
+        if uid is None:
+            uid = uuid.uuid4()
         if name is None:
             name = str(uid)
         super(Task, self).__init__(uid, name)
@@ -27,16 +29,20 @@ class Task(cf.Node):
 
 
 class Automatic(Task):
-    def __init__(self, uid=uuid.uuid4, name=None):
+    def __init__(self, uid=None, name=None):
+        if uid is None:
+            uid = uuid.uuid4()
         if name is None:
             name = str(uid)
         super(Automatic, self).__init__(uid, name)
 
 
 class Manual(Task):
-    def __init__(self, uid=uuid.uuid4, name=None, originators=list()):
+    def __init__(self, uid=None, name=None, originators=list()):
+        if uid is None:
+            uid = uuid.uuid4()
         if name is None:
-            name=str(uid)
+            name = str(uid)
         super(Manual, self).__init__(uid, name)
         self.originators=originators
         self.rem_originators=set()

@@ -7,7 +7,9 @@ class ProcessTreeElement(object):
 
     #This version doesn't use Properties
     #then, we don't need constructors based on other PTEs.
-    def __init__(self, uid=uuid.uuid4(), name=None):
+    def __init__(self, uid=None, name=None):
+        if uid is None:
+            uid = uuid.uuid4()
         if name is None:
             name = str(uid)
         self.uid = uid
@@ -25,8 +27,12 @@ class ProcessTreeElement(object):
 
 class ProcessTree(ProcessTreeElement):
 
-    def __init__(self, id=uuid.uuid4(), name=str(id)):
-        super(ProcessTree, self).__init__(id, name)
+    def __init__(self, uid=None, name=None):
+        if uid is None:
+            uid = uuid.uuid4()
+        if name is None:
+            name = uid
+        super(ProcessTree, self).__init__(uid, name)
         self.nodes = {}
         self.edges = set()
         self.variables = set()

@@ -40,13 +40,13 @@ def inductive_mine_process_tree(input_log, mining_parameters):
 
 def new_node(operator):
     if operator == cut_n_finders.Operator.xor:
-        return block.XOR("")
+        return block.XOR()
     elif operator == cut_n_finders.Operator.sequence:
-        return block.SEQ("")
+        return block.SEQ()
     elif operator == cut_n_finders.Operator.parallel:
         return block.AND()
     elif operator == cut_n_finders.Operator.loop:
-        return block.LoopXOR("")
+        return block.LoopXOR()
     return None
 
 
@@ -73,7 +73,6 @@ def inductive_mine_node(input_log, tree, miner_state):
         else:
             it = iter(split_result.sublogs)
             first_sub_log = it.next()
-            #XQ ESTA ENTRANDO A FALLTHROUGH
             first_child = inductive_mine_node(first_sub_log, tree, miner_state)
             new_n.add_child(first_child)
             if len(split_result.sublogs) > 2:

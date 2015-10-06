@@ -6,9 +6,15 @@ import data
 
 class Block(cf.Node):
 
-    def __init__(self, uid=uuid.uuid4(), name=None, incoming=[], outgoing=[]):
+    def __init__(self, uid=None, name=None, incoming=None, outgoing=None):
+        if uid is None:
+            uid = uuid.uuid4()
         if name is None:
             name = str(uid)
+        if incoming is None:
+            incoming = []
+        if outgoing is None:
+            outgoing = []
         super(Block, self).__init__(uid, name, incoming)
         self.outgoing = outgoing
         self.changeable = False
@@ -83,9 +89,15 @@ class Block(cf.Node):
 
 class XOR(Block):
 
-    def __init__(self, uid=uuid.uuid4(), name=None, incoming=[], outgoing=[] ):
+    def __init__(self, uid=None, name=None, incoming=None, outgoing=None):
+        if uid is None:
+            uid = uuid.uuid4()
         if name is None:
             name = str(uid)
+        if incoming is None:
+            incoming = []
+        if outgoing is None:
+            outgoing = []
         super(XOR, self).__init__(uid, name, incoming, outgoing)
         
     def ordering_of_childern_matters(self):
@@ -97,11 +109,18 @@ class XOR(Block):
     def __str__(self):
         return "Xor"
 
+
 class OR(Block):
     
-    def __init__(self, uid=uuid.uuid4(), name=None, incoming=[], outgoing=[] ):
+    def __init__(self, uid=None, name=None, incoming=None, outgoing=None):
+        if uid is None:
+            uid = uuid.uuid4()
         if name is None:
             name = str(uid)
+        if incoming is None:
+            incoming = []
+        if outgoing is None:
+            outgoing = []
         super(OR, self).__init__(uid, name, incoming, outgoing)
         
     def ordering_of_childern_matters(self):
@@ -115,9 +134,15 @@ class OR(Block):
 
 
 class LoopXOR(Block):
-    def __init__(self, uid=uuid.uuid4(), name=None, incoming=[], outgoing=[] ):
+    def __init__(self, uid=None, name=None, incoming=None, outgoing=None):
+        if uid is None:
+            uid = uuid.uuid4()
         if name is None:
             name = str(uid)
+        if incoming is None:
+            incoming = []
+        if outgoing is None:
+            outgoing = []
         super(LoopXOR, self).__init__(uid, name, incoming, outgoing)
         
     def ordering_of_childern_matters(self):
@@ -131,9 +156,15 @@ class LoopXOR(Block):
 
 
 class DEF(Block):
-    def __init__(self, uid=uuid.uuid4(), name=None, incoming=[], outgoing=[] ):
+    def __init__(self, uid=None, name=None, incoming=None, outgoing=None):
+        if uid is None:
+            uid = uuid.uuid4()
         if name is None:
             name = str(uid)
+        if incoming is None:
+            incoming = []
+        if outgoing is None:
+            outgoing = []
         super(DEF, self).__init__(uid, name, incoming, outgoing)
         
     def ordering_of_childern_matters(self):
@@ -147,9 +178,15 @@ class DEF(Block):
 
 
 class AND(Block):
-    def __init__(self, uid=uuid.uuid4(), name=None, incoming=[], outgoing=[] ):
+    def __init__(self, uid=None, name=None, incoming=None, outgoing=None):
+        if uid is None:
+            uid = uuid.uuid4()
         if name is None:
             name = str(uid)
+        if incoming is None:
+            incoming = []
+        if outgoing is None:
+            outgoing = []
         super(AND, self).__init__(uid, name, incoming, outgoing)
         
     def ordering_of_childern_matters(self):
@@ -163,9 +200,15 @@ class AND(Block):
 
 
 class SEQ(Block):
-    def __init__(self, uid=uuid.uuid4(), name=None, incoming=[], outgoing=[] ):
+    def __init__(self, uid=None, name=None, incoming=None, outgoing=None):
+        if uid is None:
+            uid = uuid.uuid4()
         if name is None:
             name = str(uid)
+        if incoming is None:
+            incoming = []
+        if outgoing is None:
+            outgoing = []
         super(SEQ, self).__init__(uid, name, incoming, outgoing)
         
     def ordering_of_childern_matters(self):
@@ -179,9 +222,15 @@ class SEQ(Block):
 
 
 class LoopDEF(Block):
-    def __init__(self, uid=uuid.uuid4(), name=None, incoming=[], outgoing=[] ):
+    def __init__(self, uid=None, name=None, incoming=None, outgoing=None):
+        if uid is None:
+            uid = uuid.uuid4()
         if name is None:
             name = str(uid)
+        if incoming is None:
+            incoming = []
+        if outgoing is None:
+            outgoing = []
         super(LoopDEF, self).__init__(uid, name, incoming, outgoing)
         
     def ordering_of_childern_matters(self):
@@ -195,9 +244,15 @@ class LoopDEF(Block):
 
 
 class PlaceHolder(Block):
-    def __init__(self, uid=uuid.uuid4(), name=None, incoming=[], outgoing=[] ):
+    def __init__(self, uid=None, name=None, incoming=None, outgoing=None):
+        if uid is None:
+            uid = uuid.uuid4()
         if name is None:
             name = str(uid)
+        if incoming is None:
+            incoming = []
+        if outgoing is None:
+            outgoing = []
         super(PlaceHolder, self).__init__(uid, name, incoming, outgoing)
         
     def ordering_of_childern_matters(self):
@@ -211,7 +266,9 @@ class PlaceHolder(Block):
 
 
 class Event(Block):
-    def __init__(self, uid=uuid.uuid4(), name=None, message=None, incoming=None, outgoing=None):
+    def __init__(self, uid=None, name=None, message=None, incoming=None, outgoing=None):
+        if uid is None:
+            uid = uuid.uuid4()
         if name is None:
             name = str(uid)
         super(Event, self).__init__(uid, name)
@@ -224,7 +281,9 @@ class Event(Block):
 
 
 class TimeOut(Event):
-    def __init__(self, uid=uuid.uuid4(), name=None, message=None, incoming=None, outgoing=None):
+    def __init__(self, uid=None, name=None, message=None, incoming=None, outgoing=None):
+        if uid is None:
+            uid = uuid.uuid4()
         if name is None:
             name = str(uid)
         super(TimeOut, self).__init__(uid, name, message, incoming, outgoing)
@@ -240,7 +299,9 @@ class TimeOut(Event):
 
 
 class Message(Event):
-    def __init__(self, uid=uuid.uuid4(), name=None, message=None, incoming=None, outgoing=None):
+    def __init__(self, uid=None, name=None, message=None, incoming=None, outgoing=None):
+        if uid is None:
+            uid = uuid.uuid4()
         if name is None:
             name = str(uid)
         super(TimeOut, self).__init__(uid, name, message, incoming, outgoing)
