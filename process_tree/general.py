@@ -58,5 +58,23 @@ class ProcessTree(ProcessTreeElement):
         
     def is_tree2(self, node, visited):
         node_index = self.nodes[node]
-        
-        
+
+    def __str__(self, node=None, builder=None):
+        if node is None:
+            return self.__str__(self.root)
+        if builder is None:
+            builder = []
+            self.__str__(node, builder)
+            return "".join(builder)
+        if node is not None and builder is not None:
+            builder.append(node.to_string_short())
+            if "block" in str(type(node)):
+                block = node
+                builder.append("(")
+                for edge in block.get_outgoing_edges():
+                    self.__str__(edge.target, builder)
+                    builder.append(", ")
+                builder.pop()
+                builder.append(")")
+
+

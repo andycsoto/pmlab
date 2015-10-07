@@ -21,7 +21,7 @@ class Task(cf.Node):
         write_vars.update(cf.Node.write_vars)
         return write_vars
         
-    def __str__(self):
+    def to_string_short(self):
         return self.name
         
     def is_leaf(self):

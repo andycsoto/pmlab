@@ -34,11 +34,9 @@ class CutFinder(object):
 class CutFinderEKS(CutFinder):
 
     def find_cut(self, input_log, log_info, miner_state):
-        print("CutFinderEKS")
         kSuccesor = UpToKSuccessor.fromLog(input_log) #ANDRES: IMPLEMENTAR UPTOKSUCCESSOR
         exhaustive = Exhaustive(input_log, log_info, kSuccesor, miner_state) #ANDRES: IMPLEMENTAR EXHAUSTIVE
         r = exhaustive.try_all()
-        print("Returning EKS cut")
         return r.cut
 
 
@@ -51,15 +49,14 @@ class CutFinderIMExclusiveChoice(CutFinder):
         return self.find_cut_dfg(dfg)
 
     def find_cut_dfg(self, dfg):
-        print("CutFinderIMExclusiveChoice")
         connected_components = list(nx.connected_components(dfg.to_undirected()))
         connected_components = tuple(tuple(x) for x in connected_components)
-        print("Returning XOR cut")
         return Cut(Operator.xor, connected_components)
 
 
 class CutFinderIMSequence(CutFinder):
     scr2 = None
+
     def find_cut(self, input_log, log_info, miner_state):
         return self.find_cut_dfg(log_info.directly_follows_graph)
 
@@ -67,7 +64,6 @@ class CutFinderIMSequence(CutFinder):
         return self.find_cut_dfg(dfg)
 
     def find_cut_dfg(self, dfg):
-        print("CutFinderIMSequence")
         condensed_graph_1 = nx.DiGraph()
         for scc in nx.strongly_connected_components(dfg):
             condensed_graph_1.add_node(tuple(scc))
@@ -117,7 +113,6 @@ class CutFinderIMSequence(CutFinder):
         result = []
         result.extend(set(condensed_graph_2.nodes()))
         result.sort(self.compare)
-        print("Returning SEQ cut")
         return Cut(Operator.sequence, result)
 
     def compare(self, x, y):
@@ -133,7 +128,6 @@ class CutFinderIMParallel(CutFinder):
         return self.find_cut_log_info_ms(log_info.start_activities, log_info.end_activities, log_info.directly_follows_graph, None)
 
     def find_cut_log_info_ms(self, start_activities, end_activities, dfg, minimum_self_distance_between, *msdb_params):
-        print("CutFinderIMParallel")
         #noise filtering can have removed all start and end activities
         #if that is the case, return
         if len(start_activities) == 0 or len(end_activities) == 0:
@@ -229,14 +223,12 @@ class CutFinderIMParallel(CutFinder):
             connected_components2[0] = set4
         #transform list of lists into a tuple of tuples
         connected_components2 = tuple(tuple(x) for x in connected_components2)
-        print("Returning AND cut")
         return Cut(Operator.parallel, connected_components2)
 
 
 class CutFinderIMParallelWithMinimumSelfDistance(CutFinder):
 
     def find_cut(self, input_log, log_info, miner_state):
-        print("CutFinderIMParallelWithMinimumSelfDistance")
         return CutFinderIMParallel().find_cut_log_info_ms(log_info.start_activities, log_info.end_activities, log_info.directly_follows_graph, log.LogInfo.get_min_self_distances_between_act, log_info)
 
 
@@ -246,7 +238,6 @@ class CutFinderIMLoop(CutFinder):
         return self.find_cut_start_act_end_act_dfg(log_info.start_activities, log_info.end_activities, log_info.directly_follows_graph)
 
     def find_cut_start_act_end_act_dfg(self, start_activities, end_activities, graph):
-        print("CutFinderIMLoop")
         connected_components = {}
         #initialize the start and end activities as a connected component
         for start_activity in set(start_activities):
@@ -342,7 +333,6 @@ class CutFinderIMLoop(CutFinder):
         for s in result:
             if len(s) > 0:
                 result2.append(tuple(s))
-        print("Returning LOOP cut")
         return Cut(Operator.loop, result2)
 
     def label_connected_components(self, graph, node, connected_components, connected_component):

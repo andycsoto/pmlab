@@ -252,7 +252,6 @@ class LogInfo:
     most_occurring_end_activity = None
 
     def __init__(self, log):
-        print "Creating LogInfo"
         self.directly_follows_graph = nx.DiGraph()
         self.eventually_follows_graph = nx.DiGraph()
         self.activities = {}

@@ -16,7 +16,8 @@ def process_tree_from_file(input_file, mining_parameters):
 
 def process_tree_from_log(input_log, mining_parameters=mp.MiningParametersEKS(0.2), method='inductive_miner'):
     if method is 'inductive_miner':
-        inductive_mine_process_tree(input_log, mining_parameters)
+        tree = inductive_mine_process_tree(input_log, mining_parameters)
+    print tree
 
 
 def inductive_mine_process_tree(input_log, mining_parameters):
@@ -97,7 +98,6 @@ def inductive_mine_node(input_log, tree, miner_state):
 
 
 def find_base_cases(input_log, log_info, tree, miner_state):
-    print("Finding Base Cases")
     n = None
     for bcf in miner_state.parameters.base_case_finders:
         n = bcf.find_base_cases(input_log, log_info, tree, miner_state)
@@ -105,14 +105,12 @@ def find_base_cases(input_log, log_info, tree, miner_state):
 
 
 def find_cut(input_log, log_info, miner_state):
-    print("Finding Cut")
     c = None
     for case_finder in miner_state.parameters.cut_finders:
         if c is None or not c.is_valid():
             c = case_finder.find_cut(input_log, log_info, miner_state)
         else:
             break
-        print("Returning Cut: "+str(c.operator))
         return c
 
 

@@ -84,7 +84,7 @@ class Block(cf.Node):
         return len(self.outgoing)
 
     def __str__(self):
-        return str(self.tree)
+        return self.tree.__str__(self)
 
 
 class XOR(Block):
@@ -106,7 +106,7 @@ class XOR(Block):
     def expressions_of_outgoing_edges_matter(self):
         return True
         
-    def __str__(self):
+    def to_string_short(self):
         return "Xor"
 
 
@@ -129,7 +129,7 @@ class OR(Block):
     def expressions_of_outgoing_edges_matter(self):
         return True
         
-    def __str__(self):
+    def to_string_short(self):
         return "Or"
 
 
@@ -151,7 +151,7 @@ class LoopXOR(Block):
     def expressions_of_outgoing_edges_matter(self):
         return True
         
-    def __str__(self):
+    def to_string_short(self):
         return "XorLoop"
 
 
@@ -173,7 +173,7 @@ class DEF(Block):
     def expressions_of_outgoing_edges_matter(self):
         return False
         
-    def __str__(self):
+    def to_string_short(self):
         return "Def"
 
 
@@ -195,7 +195,7 @@ class AND(Block):
     def expressions_of_outgoing_edges_matter(self):
         return False
         
-    def __str__(self):
+    def to_string_short(self):
         return "And"
 
 
@@ -217,7 +217,7 @@ class SEQ(Block):
     def expressions_of_outgoing_edges_matter(self):
         return False
         
-    def __str__(self):
+    def to_string_short(self):
         return "Seq"
 
 
@@ -239,7 +239,7 @@ class LoopDEF(Block):
     def expressions_of_outgoing_edges_matter(self):
         return False
         
-    def __str__(self):
+    def to_string_short(self):
         return "DefLoop"
 
 
@@ -261,7 +261,7 @@ class PlaceHolder(Block):
     def expressions_of_outgoing_edges_matter(self):
         return True
         
-    def __str__(self):
+    def to_string_short(self):
         return "P.H."
 
 
@@ -294,7 +294,7 @@ class TimeOut(Event):
     def expressions_of_outgoing_edges_matter(self):
         return False
         
-    def __str__(self):
+    def to_string_short(self):
         return "TimeOut"
 
 
@@ -312,5 +312,5 @@ class Message(Event):
     def expressions_of_outgoing_edges_matter(self):
         return False
         
-    def __str__(self):
+    def to_string_short(self):
         return "Message"
