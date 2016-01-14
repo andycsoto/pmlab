@@ -10,6 +10,7 @@ import base_case_finders as bcf
 import cut_n_finders
 import log_splitter as ls
 import resources
+import fall_through as ft
 
 
 class MiningParameters(object):
@@ -23,16 +24,18 @@ class MiningParameters(object):
         self.noise_threshold = noise_threshold
 
 
-class MiningParametersEKS(MiningParameters):
+class MiningParametersIM(MiningParameters):
 
     def __init__(self, noise_threshold):
-        super(MiningParametersEKS, self).__init__(noise_threshold)
-        self.base_case_finders = [bcf.BaseCaseFinderIMiEmptyLog(), bcf.BaseCaseFinderIMiEmptyTrace(), bcf.BaseCaseFinderIMiSingleActivity()]
-        self.cut_finders = [cut_n_finders.CutFinderIM(), cut_n_finders.CutFinderEKS()]
+        super(MiningParametersIM, self).__init__(noise_threshold)
+        self.base_case_finders = [bcf.BaseCaseFinderIM()]
+        self.cut_finders = [cut_n_finders.CutFinderIM()]
         self.log_splitter = ls.LogSplitterIMi()
+        self.fall_throughs = [ft.FallThroughTauLoop(), ft.FallThroughFlower()]
 
 
 class MinerState:
+
     discarded_events = {}
     parameters = None
 

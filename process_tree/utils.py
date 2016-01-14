@@ -14,7 +14,7 @@ def process_tree_from_file(input_file, mining_parameters):
     process_tree_from_log(input_log, mining_parameters)
 
 
-def process_tree_from_log(input_log, mining_parameters=mp.MiningParametersEKS(0.2), method='inductive_miner'):
+def process_tree_from_log(input_log, mining_parameters=mp.MiningParametersIM(0.2), method='inductive_miner'):
     if method is 'inductive_miner':
         tree = inductive_mine_process_tree(input_log, mining_parameters)
     print tree
@@ -100,7 +100,8 @@ def inductive_mine_node(input_log, tree, miner_state):
 def find_base_cases(input_log, log_info, tree, miner_state):
     n = None
     for bcf in miner_state.parameters.base_case_finders:
-        n = bcf.find_base_cases(input_log, log_info, tree, miner_state)
+        if n is None:
+            n = bcf.find_base_cases(input_log, log_info, tree, miner_state)
     return n
 
 
@@ -111,7 +112,7 @@ def find_cut(input_log, log_info, miner_state):
             c = case_finder.find_cut(input_log, log_info, miner_state)
         else:
             break
-        return c
+    return c
 
 
 def split_log(input_log, log_info, cut, miner_state):
@@ -123,5 +124,6 @@ def split_log(input_log, log_info, cut, miner_state):
 def find_fall_through(input_log, log_info, tree, miner_state):
     n = None
     for ft in miner_state.parameters.fall_throughs:
-        n = ft.fall_through(input_log, log_info, cut_n_finders, miner_state)
+        if n is None:
+            n = ft.fall_through(input_log, log_info, tree, miner_state)
     return n

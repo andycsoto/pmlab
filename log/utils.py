@@ -142,13 +142,13 @@ def log_from_xes(filename, all_info=False, only_uniq_cases=False):
             'time:timestamp':'timestamp'}
     tree = xmltree.parse(filename)
     root = tree.getroot()
-    traces = root.findall('{http://www.xes-standard.org/}trace')
+    traces = root.findall('{http://www.xes-standard.org}trace')
     cases = []
     uniq_cases = defaultdict(int)
     for t in traces:
         case = []
         for c in t:
-            if c.tag == '{http://www.xes-standard.org/}event':
+            if c.tag == '{http://www.xes-standard.org}event':
                 if all_info:
                     dict = {tr.get(s.attrib['key'],s.attrib['key']):s.attrib['value']
                             for s in c}

@@ -3,7 +3,7 @@ import networkx as nx
 import enum
 import log
 
-Operator = enum.Enum('operator', 'xor sequence parallel loop')
+Operator = enum.Enum('xor', 'sequence', 'parallel', 'loop')
 
 
 class Cut:
@@ -31,13 +31,13 @@ class CutFinder(object):
         pass
 
 
-class CutFinderEKS(CutFinder):
-
-    def find_cut(self, input_log, log_info, miner_state):
-        kSuccesor = UpToKSuccessor.fromLog(input_log) #ANDRES: IMPLEMENTAR UPTOKSUCCESSOR
-        exhaustive = Exhaustive(input_log, log_info, kSuccesor, miner_state) #ANDRES: IMPLEMENTAR EXHAUSTIVE
-        r = exhaustive.try_all()
-        return r.cut
+# class CutFinderEKS(CutFinder):
+#
+#     def find_cut(self, input_log, log_info, miner_state):
+#         kSuccesor = UpToKSuccessor.fromLog(input_log) #ANDRES: IMPLEMENTAR UPTOKSUCCESSOR
+#         exhaustive = Exhaustive(input_log, log_info, kSuccesor, miner_state) #ANDRES: IMPLEMENTAR EXHAUSTIVE
+#         r = exhaustive.try_all()
+#         return r.cut
 
 
 class CutFinderIMExclusiveChoice(CutFinder):

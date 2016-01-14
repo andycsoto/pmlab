@@ -12,6 +12,23 @@ class BaseCaseFinder:
         pass
 
 
+class BaseCaseFinderIM(BaseCaseFinder):
+
+    def find_base_cases(self, input_log, log_info, tree, miner_state):
+        if len(log_info.activities.keys()) == 1 and log_info.number_of_epsilon_traces == 0 and log_info.number_of_events == len(input_log.cases):
+            activity = iter(log_info.activities).next()
+            node = task.Task(name=str(activity))
+            node.tree = tree
+            tree.add_node(node)
+            return node
+        elif len(log_info.activities.keys()) == 0:
+            node = task.Automatic("tau")
+            node.tree = tree
+            tree.add_node(node)
+            return node
+        return None
+
+
 class BaseCaseFinderIMiEmptyLog(BaseCaseFinder):
 
     def find_base_cases(self, input_log, log_info, tree, miner_state):

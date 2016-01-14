@@ -46,7 +46,8 @@ class LogSplitterIMi(LogSplitter):
     def split_xor(self, result, trace, partition, cardinality, map_sigma_2_sublog, map_activity_2_sigma, noise):
         if len(trace) == 0:
             for sublog in result:
-                sublog.add(trace, cardinality)
+                for element in range(0,cardinality):
+                    sublog.cases.append(trace)
             return
         event_counter = {}
         for sigma in partition:

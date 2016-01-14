@@ -72,7 +72,7 @@ class Block(cf.Node):
 
     def get_children(self):
         children = cf.Node(len(self.outgoing))
-        for i in range(1, len(self.outgoing)):
+        for i in range(len(self.outgoing), 0, -1):
             children[i] = self.outgoing[i].get_target()
         return children
 
