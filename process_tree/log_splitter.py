@@ -36,7 +36,10 @@ class LogSplitterIMi(LogSplitter):
             if cut.operator == Operator.xor:
                 self.split_xor(result, trace, cut.partition, input_log.get_case_freq(list(trace)), map_sigma_2_sublog, map_activity_2_sigma, noise)
             elif cut.operator == Operator.sequence:
-                self.split_sequence(result, trace, cut.partition, input_log.get_case_freq(list(trace)), map_sigma_2_sublog, map_activity_2_sigma, noise)
+                if trace is ():
+                    self.split_sequence(result, trace, cut.partition, input_log.get_case_freq(trace), map_sigma_2_sublog, map_activity_2_sigma, noise)
+                else:
+                    self.split_sequence(result, trace, cut.partition, input_log.get_case_freq(list(trace)), map_sigma_2_sublog, map_activity_2_sigma, noise)
             elif cut.operator == Operator.parallel:
                 self.split_parallel(result, trace, cut.partition, input_log.get_case_freq(list(trace)), map_sigma_2_sublog, map_activity_2_sigma, noise)
             elif cut.operator == Operator.loop:
@@ -46,7 +49,7 @@ class LogSplitterIMi(LogSplitter):
     def split_xor(self, result, trace, partition, cardinality, map_sigma_2_sublog, map_activity_2_sigma, noise):
         if len(trace) == 0:
             for sublog in result:
-                for element in range(0,cardinality):
+                for element in range(0, cardinality):
                     sublog.cases.append(trace)
             return
         event_counter = {}

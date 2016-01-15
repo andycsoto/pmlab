@@ -43,7 +43,7 @@ class FallThroughTauLoop(FallThrough):
         number_of_times_tau_taken = 0
         partial_trace = []
         for event in trace:
-            if first is False and event not in start_activities:
+            if first is False and event in start_activities:
                 for i in range(0, cardinality):
                     sublog.cases.append(partial_trace)
                 partial_trace = []
