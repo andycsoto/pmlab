@@ -3,7 +3,7 @@ import networkx as nx
 import enum
 import log
 
-Operator = enum.Enum('xor', 'sequence', 'parallel', 'loop')
+Operator = enum.Enum('operator','xor sequence parallel loop')
 
 
 class Cut:
@@ -83,6 +83,7 @@ class CutFinderIMSequence(CutFinder):
         xor_graph = nx.DiGraph()
         xor_graph.add_nodes_from(condensed_graph_1)
         scr1 = CutFinderIMSequenceReachability(condensed_graph_1)
+
         for node in condensed_graph_1.nodes():
             reachable_from_to = scr1.get_reachable_from_to(node)
             not_reachable = set(condensed_graph_1.nodes()).difference(reachable_from_to)
@@ -351,7 +352,7 @@ class CutFinderIMSequenceReachability:
         self.condensed_graph = graph
 
     def get_reachable_from_to(self, node):
-        r = self.find_reachable_to(node)
+        r = set(self.find_reachable_to(node))
         r.update(self.find_reachable_from(node))
         return r
 
